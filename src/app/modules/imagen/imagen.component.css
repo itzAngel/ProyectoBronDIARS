@@ -1,0 +1,19 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+}
+.grid-item {
+    text-align: center;
+}
+@media (max-width: 1050px) {
+    .grid-container {
+        display: grid;
+        grid-template-columns: auto auto;
+    }
+}
+@media (max-width: 600px) {
+    .grid-container {
+        display: grid;
+        grid-template-columns: auto;
+    }
+}

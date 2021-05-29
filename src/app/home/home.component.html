@@ -1,0 +1,107 @@
+ <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+    <mat-toolbar style="height: 100px;">
+        <div class="servicio_ayuda">
+            <span class="servicio_ayuda_texto">Necesitas Ayuda</span>
+            <p class="servicio_ayuda_numero"><i class="fas fa-phone"></i>&nbsp;&nbsp;942959184</p>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div>
+            <h1 class="titulo_marca">BRON</h1>
+        </div>
+        <span class="example-spacer"></span>
+        <div>
+            <button mat-icon-button [matMenuTriggerFor]="menuLogin" >
+                <mat-icon>person</mat-icon>
+              </button>
+              <mat-menu #menuLogin="matMenu">
+                <button mat-button *ngIf="!loggeado && !loggeadoClient"routerLink="../login">Login</button>
+                <button mat-menu-item *ngIf="loggeado" (click)="cerrarSesion()">
+                  <mat-icon>dialpad</mat-icon>
+                  <span>Cerrar Sesion</span>
+                </button>
+                <button mat-menu-item *ngIf="loggeadoClient" (click)="cerrarSesion()">
+                    <mat-icon>dialpad</mat-icon>
+                    <span>Cerrar Sesion</span>
+                  </button>
+              </mat-menu>
+        </div>
+        <div>
+            <p class="carrito" style="cursor: pointer;" (click)="snav.toggle()">Carrito</p>
+        </div>
+    </mat-toolbar>
+    <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0" [hasBackdrop]="true">
+        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" position="end">
+            <mat-nav-list>
+                <mat-tab-group>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            <mat-icon class="example-tab-icon">shopping_bag</mat-icon>
+                            Bolsa de compra
+                        </ng-template>
+                    </mat-tab>
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                            <mat-icon class="example-tab-icon">favorite</mat-icon>
+                            Favoritos
+                        </ng-template>
+                    </mat-tab>
+                  </mat-tab-group>
+            </mat-nav-list>
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+                <div class="container-fluid border container-slider">
+                    <div class="row">
+                        <div class="col-xl">
+                            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active imagen-slider">
+                                        <img src="../../../assets/imagenes/zapatos1-2.jpg" class="d-block w-100% img-fluid" alt="...">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="../../../assets/imagenes/zapatos2.jpg" class="d-block w-100% img-fluid" alt="...">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="../../../assets/imagenes/zapatos3.jpg" class="d-block w-1000 img-fluid" alt="...">
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                              <span class="visually-hidden">Previous</span>
+                            </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                              <span class="visually-hidden">Next</span>
+                            </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <main class="main">
+                    <div class="container">
+                        <h2 class="main-title">Catalogo de Productos Bron</h2>
+                        <app-producto [vistaCliente]="true"></app-producto>
+                    </div>
+                </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                        <div>
+                            <a href="#">Privacy Policy</a> &middot;
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
+
+
+

@@ -1,0 +1,81 @@
+<div class="container">
+    <div class="row mt-4">
+        <mat-toolbar>
+            <span>Lista de Asigna Producto Tienda</span>
+            <span style="flex: 1 1 auto;"></span>
+            <button mat-button class="example-icon" (click)="agregar()">
+                <mat-icon>add_circle</mat-icon>Agregar
+            </button>
+        </mat-toolbar>
+        <table class="table caption-top ">
+            <caption>Lista de Asigna Producto Tienda</caption>
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Tienda</th>
+                    <th scope="col">cantidad</th>
+                    <th scope="col">Opciones</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let asigna of asignas">
+                <tr>
+                    <td>{{asigna.detalleProducto.producto.modelo}} {{asigna.detalleProducto.color}} {{asigna.detalleProducto.talla}}</td>
+                    <td>{{asigna.tienda.nombre_tienda}} {{asigna.tienda.distrito}}</td>
+                    <td>{{asigna.cantidad}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="Editar(asigna)">Editar</button> &nbsp;
+                        <button type="button" class="btn btn-danger" (click)="Eliminar(asigna)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container">
+    <div class="card mt-4">
+        <div class="card-header">
+            <span *ngIf="!editar">Agregar Asigna Producto Tienda</span>
+            <span *ngIf="editar">Editar Asigna Producto Tienda</span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <mat-form-field style="width: 250px;">
+                        <mat-select placeholder="detalleProducto" name="detalleProducto" #detalleProducto="ngModel" [(ngModel)]="asigna.detalleProducto.id_detalle_producto">
+                            <mat-option *ngFor="let obj of detalles" [value]="obj.id_detalle_producto">
+                                {{obj.producto.modelo}} {{obj.color}} {{obj.talla}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <mat-form-field style="width: 250px;">
+                        <mat-select placeholder="tienda" name="tienda" #tienda="ngModel" [(ngModel)]="asigna.tienda.id_tienda">
+                            <mat-option *ngFor="let obj of tiendas" [value]="obj.id_tienda">
+                                {{obj.nombre_tienda}} {{obj.distrito}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <textarea type="text" placeholder="Ingrese cantidad" class="form-control" name="cantidad" #cantidad="ngModel" [(ngModel)]="asigna.cantidad"></textarea>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-6 text-center" *ngIf="!editar">
+                    <button type="button" class="btn btn-danger" (click)="Guardar(asigna)">Guardar Asigna Producto Tienda</button>
+                </div>
+                <div class="col-6 text-center" *ngIf="editar">
+                    <button type="button" class="btn btn-danger" (click)="Actualizar(asigna)">Editar Asigna Producto Tienda</button>
+                </div>
+                <div class="col-6 text-center">
+                    <button type="button" class="btn btn-primary" (click)="limpiar()">Limpiar Formulario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

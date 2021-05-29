@@ -1,0 +1,62 @@
+<div class="container">
+    <div class="row mt-4">
+        <mat-toolbar>
+            <span>Lista de Imagenes</span>
+            <span class="example-spacer"></span>
+            <button mat-button class="example-icon">
+                <mat-icon>add_circle</mat-icon>Agregar
+            </button>
+        </mat-toolbar>
+        <section class="container-products">
+            <div class="grid-container">
+                <div class="card card-estilo mt-4 grid-item" *ngFor="let ima of listaImagenes">
+                    <img src="{{ima.base64}}" class="card-img-top" style="max-width: 200px; max-height: 200px;">
+                    <div class="card-body">
+                        <span class="card-title">Producto: {{ima.producto.modelo}}</span>
+                        <br>
+                        <span class="product__price">Precio: S/.{{ima.producto.precio}}</span>
+                    </div>
+                    <button type="button" class="btn btn-danger" (click)="Eliminar(ima)">Eliminar</button>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<div class="container">
+    <div class="card mt-4">
+        <div class="card-header">
+            <button mat-icon-button>
+                <mat-icon>reply</mat-icon>
+            </button>Agregar Imagen
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <mat-form-field style="width: 250px;">
+                        <mat-select placeholder="Producto" name="produ" #produ="ngModel" [(ngModel)]="img.producto.id_producto">
+                            <mat-option *ngFor="let obj of productos" [value]="obj.id_producto">
+                                {{obj.modelo}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <form novalidate enctype="multipart/form-data" class="formedia">
+                        <input type="file" (change)="getFiles($event)" />
+                        <button mat-button type="reset">
+                            <mat-icon>cached</mat-icon>Reset
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <button type="button" class="btn btn-danger" (click)="Subir()">Guardar Imagen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

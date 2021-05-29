@@ -1,0 +1,88 @@
+<div class="container" *ngIf="esListar">
+    <div class="row mt-4">
+        <mat-toolbar>
+            <span>Lista de Ventas</span>
+            <span style="flex: 1 1 auto;"></span>
+            <button mat-button class="example-icon" (click)="agregar()">
+                <mat-icon>add_circle</mat-icon>Agregar
+            </button>
+        </mat-toolbar>
+        <mat-card class="example-card mt-4" *ngFor="let venta of ventas">
+            <mat-card-header>
+              <mat-card-title>{{venta.id_venta}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <span>Fecha de venta: {{venta.fecha_venta | date}} </span> <br>
+                <span>Precio Total: {{venta.precio_total}}</span> <br>
+                <span>Cliente: {{venta.cliente.nombre}} {{venta.cliente.apellido}}</span> <br>
+                <table class="table caption-top ">
+                    <caption>Lista de Detalle Venta</caption>
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Venta</th>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Tienda</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let detalleVenta of venta.listaDetalleVenta">
+                        <tr>
+                            <td>{{detalleVenta.venta.id_venta}} {{detalleVenta.venta.cliente.nombre}} {{detalleVenta.venta.fecha}}</td>
+                            <td>{{detalleVenta.asignaProductoTienda.detalleProducto.producto.categoria.categoria}} {{detalleVenta.asignaProductoTienda.detalleProducto.producto.modelo}} {{detalleVenta.asignaProductoTienda.detalleProducto.color}}</td>
+                            <td>{{detalleVenta.asignaProductoTienda.tienda.nombre_tienda}}</td>
+                            <td>{{detalleVenta.cantidad}}</td>
+                            <td>{{detalleVenta.precio}}</td>
+                            <td>
+                                <button type="button" class="btn btn-danger" (click)="EliminarDetalle(detalleVenta)">Eliminar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </mat-card-content>
+            <br>
+            <mat-card-actions>
+                <button type="button" class="btn btn-primary" (click)="Editar(venta)">Editar</button> &nbsp;
+                <button type="button" class="btn btn-danger" (click)="Eliminar(venta)">Eliminar</button>
+            </mat-card-actions>
+          </mat-card>
+    </div>
+</div>
+<div class="container" *ngIf="!esListar">
+    <div class="card mt-4">
+        <div class="card-header">
+            <button mat-icon-button class="example-icon" (click)="listar()">
+                <mat-icon>reply</mat-icon>
+            </button>
+            <span *ngIf="!editar">Agregar Venta</span>
+            <span *ngIf="editar">Editar Venta</span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <mat-form-field style="width: 250px;">
+                        <mat-select placeholder="cliente" name="cliente" #cliente="ngModel" [(ngModel)]="venta.cliente.id_cliente">
+                            <mat-option *ngFor="let obj of clientes" [value]="obj.id_cliente">
+                                {{obj.nombre}} {{obj.apellido}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <!--<app-detalle-venta [esExterno]="true" [idExterno]="venta.id_venta" (newItemEvent)="addItem($event)"></app-detalle-venta>-->
+            <br><br>
+            <div class="row">
+                <div class="col-6 text-center" *ngIf="!editar">
+                    <button type="button" class="btn btn-danger" (click)="Guardar(venta)">Guardar Venta</button>
+                </div>
+                <div class="col-6 text-center" *ngIf="editar">
+                    <button type="button" class="btn btn-danger" (click)="Actualizar(venta)">Editar Venta</button>
+                </div>
+                <div class="col-6 text-center">
+                    <button type="button" class="btn btn-primary" (click)="limpiar()">Limpiar Formulario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

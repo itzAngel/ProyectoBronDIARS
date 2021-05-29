@@ -1,0 +1,74 @@
+<div class="container">
+    <div class="row mt-4">
+        <mat-toolbar>
+            <span>Lista de Tienda</span>
+            <span style="flex: 1 1 auto;"></span>
+            <button mat-button class="example-icon" (click)="agregar()">
+                <mat-icon>add_circle</mat-icon>Agregar
+            </button>
+        </mat-toolbar>
+        <table class="table caption-top ">
+            <caption>Lista de Tienda</caption>
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Usuario</th>
+                    <th scope="col">Tienda</th>
+                    <th scope="col">Distrito</th>
+                    <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Opciones</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let tienda of tiendas">
+                <tr>
+                    <td>{{tienda.usuario.nombre}} {{tienda.usuario.apellido}}</td>
+                    <td>{{tienda.nombre_tienda}}</td>
+                    <td>{{tienda.distrito}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="Editar(tienda)">Editar</button> &nbsp;
+                        <button type="button" class="btn btn-danger" (click)="Eliminar(tienda)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container">
+    <div class="card mt-4">
+        <div class="card-header">
+            <span *ngIf="!editar">Agregar Tienda</span>
+            <span *ngIf="editar">Editar Tienda</span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Ingrese nombre" class="form-control" name="nombre_tienda" #nombre_tienda="ngModel" [(ngModel)]="tienda.nombre_tienda">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Ingrese distrito" class="form-control" name="distrito" #distrito="ngModel" [(ngModel)]="tienda.distrito">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <mat-form-field style="width: 250px;">
+                        <mat-select placeholder="usuario" name="usuario" #usuario="ngModel" [(ngModel)]="tienda.usuario.id_usuario">
+                            <mat-option *ngFor="let obj of usuarios" [value]="obj.id_usuario">
+                                {{obj.nombre}} {{obj.apellido}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 text-center" *ngIf="!editar">
+                    <button type="button" class="btn btn-danger" (click)="Guardar(tienda)">Guardar Tienda</button>
+                </div>
+                <div class="col-6 text-center" *ngIf="editar">
+                    <button type="button" class="btn btn-danger" (click)="Actualizar(tienda)">Editar Tienda</button>
+                </div>
+                <div class="col-6 text-center">
+                    <button type="button" class="btn btn-primary" (click)="limpiar()">Limpiar Formulario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-tab-group>
+            <mat-tab label="Cliente"> 
+                <form>
+                    <table class="example-full-width" cellspacing="0">
+                        <tr>
+                            <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Username" [(ngModel)]="usernameClient" name="username" required>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Password" [(ngModel)]="passwordClient" type="password" name="password" required>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <p *ngIf="error" class="error">
+                            {{ error }}
+                        </p>
+                    </table>
+                </form>
+                <button mat-raised-button color="primary" (click)="checkClient()">Iniciar Sesion</button>
+                <button mat-raised-button routerLink="/home">Pagina principal</button>
+            </mat-tab>
+            <mat-tab label="Administrador"> 
+                <form>
+                    <table class="example-full-width" cellspacing="0">
+                        <tr>
+                            <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Username" [(ngModel)]="username" name="username" required>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Password" [(ngModel)]="password" type="password" name="password" required>
+                                </mat-form-field>
+                            </td>
+                        </tr>
+                        <p *ngIf="error" class="error">
+                            {{ error }}
+                        </p>
+                    </table>
+                </form>
+                <button mat-raised-button color="primary" (click)="check()">Iniciar Sesion</button>
+                <button mat-raised-button routerLink="/home">Pagina principal</button>
+            </mat-tab>
+          </mat-tab-group>
+    </mat-card-content>
+</mat-card>

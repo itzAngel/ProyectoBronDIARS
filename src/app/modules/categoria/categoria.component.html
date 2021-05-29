@@ -1,0 +1,58 @@
+<div class="container">
+    <div class="row mt-4">
+        <mat-toolbar>
+            <span>Lista de Categorías</span>
+            <span style="flex: 1 1 auto;"></span>
+            <button mat-button class="example-icon" (click)="agregar()">
+                <mat-icon>add_circle</mat-icon>Agregar
+            </button>
+        </mat-toolbar>
+        <table class="table caption-top ">
+            <caption>Lista de Categorías</caption>
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Código Categoría</th>
+                    <th scope="col">Nombre Categoría</th>
+                    <th scope="col">Opciones</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let cat of categorias">
+                <tr>
+                    <th scope="row">{{cat.id_categoria}} </th>
+                    <td>{{cat.categoria}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="Editar(cat)">Editar</button> &nbsp;
+                        <button type="button" class="btn btn-danger" (click)="Eliminar(cat)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container">
+    <div class="card mt-4">
+        <div class="card-header">
+            <span *ngIf="!editar">Agregar Categoría</span>
+            <span *ngIf="editar">Editar Categoría</span>
+        </div>
+        <div class="card-body">
+            <div class="row" style="justify-content: center;">
+                <div class="col-md-12 mb-3">
+                    <input type="text" placeholder="Ingrese Nombre de Categoría" class="form-control" name="category" #category="ngModel" [(ngModel)]="categoria.categoria">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-6 text-center" *ngIf="!editar">
+                    <button type="button" class="btn btn-danger" (click)="Guardar(categoria)">Guardar Categoría</button>
+                </div>
+                <div class="col-6 text-center" *ngIf="editar">
+                    <button type="button" class="btn btn-danger" (click)="Actualizar()">Editar Categoría</button>
+                </div>
+                <div class="col-6 text-center">
+                    <button type="button" class="btn btn-primary" (click)="limpiar()">Limpiar Formulario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

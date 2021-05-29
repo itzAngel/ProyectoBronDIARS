@@ -1,0 +1,83 @@
+<div class="container">
+    <div class="row mt-4">
+        <mat-toolbar>
+            <span>Lista de Usuarios</span>
+            <span style="flex: 1 1 auto;"></span>
+            <button mat-button class="example-icon" (click)="agregar()">
+                <mat-icon>add_circle</mat-icon>Agregar
+            </button>
+        </mat-toolbar>
+        <table class="table caption-top ">
+            <caption>Lista de Usuarios</caption>
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">DNI</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Privilegio</th>
+                    <th scope="col">Opciones</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let usuario of usuarios">
+                <tr>
+                    <th scope="row">{{usuario.dni_usuario}} </th>
+                    <td>{{usuario.nombre}}</td>
+                    <td>{{usuario.apellido}}</td>
+                    <td>{{usuario.email}}</td>
+                    <td *ngIf="usuario.privilegio == 0">Jefe de sector/Asistente</td>
+                    <td *ngIf="usuario.privilegio == 1">Administrador</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="Editar(usuario)">Editar</button> &nbsp;
+                        <button type="button" class="btn btn-danger" (click)="Eliminar(usuario)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container">
+    <div class="card mt-4">
+        <div class="card-header">
+            <span *ngIf="!editar">Agregar Usuario</span>
+            <span *ngIf="editar">Editar Usuario</span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Ingrese dni Usuario" class="form-control" name="dniUsuario" #dniUsuario="ngModel" [(ngModel)]="usuario.dni_usuario">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Ingrese Nombre" class="form-control" name="nombre" #nombre="ngModel" [(ngModel)]="usuario.nombre">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Ingrese apellido" class="form-control" name="apellido" #apellido="ngModel" [(ngModel)]="usuario.apellido">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Ingrese email" class="form-control" name="email" #email="ngModel" [(ngModel)]="usuario.email">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <input type="number" placeholder="Ingrese privilegio (0=Jefe de sector o Asistente/1=Administrador)" class="form-control" name="privilegio" #privilegio="ngModel" [(ngModel)]="usuario.privilegio">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <input type="password" placeholder="Ingrese contrasena" class="form-control" name="contrasena" #contrasena="ngModel" [(ngModel)]="usuario.contrasena">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 text-center" *ngIf="!editar">
+                    <button type="button" class="btn btn-danger" (click)="Guardar(usuario)">Guardar Usuario</button>
+                </div>
+                <div class="col-6 text-center" *ngIf="editar">
+                    <button type="button" class="btn btn-danger" (click)="Actualizar()">Editar Usuario</button>
+                </div>
+                <div class="col-6 text-center">
+                    <button type="button" class="btn btn-primary" (click)="limpiar()">Limpiar Formulario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

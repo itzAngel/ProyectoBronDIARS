@@ -1,0 +1,53 @@
+<div *ngIf="loggeado" class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+    <mat-toolbar color="primary" class="example-toolbar">
+        <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+        <h1 class="example-app-name" routerLink="../home" style="cursor: pointer;">
+            Bron App
+        </h1>
+        <span class="example-spacer"></span>
+        <button mat-icon-button [matMenuTriggerFor]="menuLogin" >
+            <mat-icon>person</mat-icon>
+          </button>
+          <mat-menu #menuLogin="matMenu">
+            <button mat-menu-item (click)="cerrarSesion()">
+              <mat-icon>dialpad</mat-icon>
+              <span>Cerrar Sesion</span>
+            </button>
+          </mat-menu>
+    </mat-toolbar>
+
+    <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0" [hasBackdrop]="true">
+        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+            <mat-nav-list>
+                <a class="nav-link" routerLink="{{nav.link}}" *ngFor="let nav of listaNavegacion">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    {{nav.viewValue}}
+                </a>
+            </mat-nav-list>
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+            <div class="contenido">
+                <router-outlet></router-outlet>
+            </div>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                        <div>
+                            <a href="#">Privacy Policy</a> &middot;
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
+<div *ngIf="!loggeado">
+    <span>CONTENIDO BLOQUEADO, Inicie sesion para ver el contenido</span>
+    <br><br>
+    <button mat-button routerLink="../login" style="background-color: rgb(64, 115, 224)">Login</button>
+    <br><br>
+    <button mat-raised-button routerLink="/home">Pagina principal</button>
+</div>

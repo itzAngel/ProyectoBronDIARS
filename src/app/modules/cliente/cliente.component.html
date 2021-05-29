@@ -1,0 +1,90 @@
+<div class="container">
+    <div class="row mt-4">
+        <mat-toolbar>
+            <span>Lista de Clientes</span>
+            <span style="flex: 1 1 auto;"></span>
+            <button mat-button class="example-icon" (click)="agregar()">
+                <mat-icon>add_circle</mat-icon>Agregar
+            </button>
+        </mat-toolbar>
+        <table class="table caption-top ">
+            <caption>Lista de Clientes</caption>
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">DNI</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Telefeno</th>
+                    <th scope="col">Direccion</th>
+                    <th scope="col">Opciones</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let cliente of clientes">
+                <tr>
+                    <th scope="row">{{cliente.dni_cliente}} </th>
+                    <td>{{cliente.nombre}}</td>
+                    <td>{{cliente.apellido}}</td>
+                    <td>{{cliente.telefono}}</td>
+                    <td>{{cliente.direccion}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="Editar(cliente)">Editar</button> &nbsp;
+                        <button type="button" class="btn btn-danger" (click)="Eliminar(cliente)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container">
+    <div class="card mt-4">
+        <div class="card-header">
+            <span *ngIf="!editar">Agregar Cliente</span>
+            <span *ngIf="editar">Editar Cliente</span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Editar dni Cliente" class="form-control" name="dniCliente" #dniCliente="ngModel" [(ngModel)]="cliente.dni_cliente">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Editar Nombre" class="form-control" name="nombre" #nombre="ngModel" [(ngModel)]="cliente.nombre">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Editar apellido" class="form-control" name="apellido" #apellido="ngModel" [(ngModel)]="cliente.apellido">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Editar telefeno" class="form-control" name="tele" #tele="ngModel" [(ngModel)]="cliente.telefono">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Editar provincia" class="form-control" name="provincia" #provincia="ngModel" [(ngModel)]="cliente.provincia">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Editar distrito" class="form-control" name="distrito" #distrito="ngModel" [(ngModel)]="cliente.distrito">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Editar direccion" class="form-control" name="direccion" #direccion="ngModel" [(ngModel)]="cliente.direccion">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <input type="password" placeholder="Editar contrasena" class="form-control" name="contrasena" #contrasena="ngModel" [(ngModel)]="cliente.contrasena">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 text-center" *ngIf="!editar">
+                    <button type="button" class="btn btn-danger" (click)="Guardar(cliente)">Guardar cliente</button>
+                </div>
+                <div class="col-6 text-center" *ngIf="editar">
+                    <button type="button" class="btn btn-danger" (click)="Actualizar()">Editar cliente</button>
+                </div>
+                <div class="col-6 text-center">
+                    <button type="button" class="btn btn-primary" (click)="limpiar()">Limpiar Formulario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

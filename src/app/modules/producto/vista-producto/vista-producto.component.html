@@ -1,0 +1,45 @@
+<div class="container">
+    <button mat-button routerLink="../"><mat-icon>reply</mat-icon>Regresar</button>
+    <div class="row mt-4" *ngIf="product">
+        <div class="col-md-6">
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img src="{{product.foto}}" class="d-block w-100">
+                  </div>
+                  <div class="carousel-item" *ngFor="let img of product.listaImagen">
+                    <img src="{{img.base64}}" class="d-block w-100">
+                  </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+        </div>
+        <div class="col-md-6">
+            <mat-list>
+                <div mat-subheader>Datos del Producto</div>
+                <mat-list-item >
+                  <mat-icon mat-list-icon>folder</mat-icon>
+                  <div mat-line>Modelo: {{product.modelo}}</div>
+                </mat-list-item>
+                <mat-list-item >
+                    <mat-icon mat-list-icon>folder</mat-icon>
+                    <div mat-line>Precio: S/.{{product.precio}} </div>
+                  </mat-list-item>
+            </mat-list>
+            <mat-list>
+                <div mat-subheader>Colores y Tallas</div>
+                <mat-list-item *ngFor="let detalleProducto of product.listaDetalleProducto">
+                    {{detalleProducto.talla}} - {{detalleProducto.color}}
+                    <mat-divider></mat-divider>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </div>
+</div>
