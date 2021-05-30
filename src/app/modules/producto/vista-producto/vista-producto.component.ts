@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BaseComponent } from 'src/app/base/base.component';
 import { Producto} from 'src/app/models/producto';
 import { CategoriaService } from '../../categoria/categoria.service';
 import { DetalleProductoService } from '../../detalle-producto/detalle-producto.service';
@@ -10,13 +13,17 @@ import { ProductoService } from '../producto.service';
   templateUrl: './vista-producto.component.html',
   styleUrls: ['./vista-producto.component.css']
 })
-export class VistaProductoComponent implements OnInit {
+export class VistaProductoComponent extends BaseComponent implements OnInit {
   product: Producto|undefined;
-  constructor(private route: ActivatedRoute,public service: ProductoService,
+  constructor(public dialog: MatDialog, public _snackBar: MatSnackBar,
+    public router:Router, public route: ActivatedRoute,public service: ProductoService,
     public categoriaservice: CategoriaService, public detalleProductoService: DetalleProductoService,
-    public imgservice: ImagenService) { }
+    public imgservice: ImagenService) {
+      super(dialog,_snackBar,router,route);
+  }
 
   ngOnInit(): void {
+    this.checkLogin();
     // First get the product id from the current route.
     const routeParams = this.route.snapshot.paramMap;
     const productIdFromRoute = Number(routeParams.get('productId'));
@@ -36,6 +43,28 @@ export class VistaProductoComponent implements OnInit {
         });
       });
     });
+  }
+
+  comprar(producto: Producto){
+    var noexec:boolean = false;
+    if(this.service.listaCarrito != null){
+      this.service.listaCarrito.forEach(element => {
+        if(producto.id_producto == element.id_producto){
+          noexec = true;
+        }
+      });
+      if(!noexec){
+        localStorage.removeItem('listaCarrito');
+        this.service.listaCarrito.push(producto);
+        localStorage.setItem('listaCarrito', JSON.stringify(this.service.listaCarrito));
+      }else{
+        this.openSnackBar("El producto ya fue agregado al carrito");
+      }
+    }else{
+      localStorage.removeItem('listaCarrito');
+      this.service.listaCarrito.push(producto);
+      localStorage.setItem('listaCarrito', JSON.stringify(this.service.listaCarrito));
+    }
   }
 
 }

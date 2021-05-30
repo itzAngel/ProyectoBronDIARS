@@ -1,0 +1,403 @@
+@font-face {
+    font-family: "Inconsolata";
+    src: url(/fuentes/Inconsolata-VariableFont_wdth\,wght.ttf);
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url(/fuentes/Poppins-Bold.ttf);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.contenedor {
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    font-family: "Inconsolata";
+}
+
+img {
+    display: block;
+    width: 100%;
+}
+
+.servicio_ayuda_texto {
+    color: #707072;
+    font-size: 1.8em;
+    font-family: "Inconsolata";
+}
+
+.servicio_ayuda_numero {
+    color: #707072;
+    font-size: 1.8em;
+    font-family: "Inconsolata";
+}
+
+.titulo_marca {
+    text-align: center;
+    font-size: 4.5em;
+    color: #707072;
+    font-family: "Inconsolata";
+    padding-top: 20px;
+}
+
+
+/* .titulo_marca::after{ 
+  position: absolute; 
+  content: '';
+  display: block;
+  background: #707072;
+  border-top: 5px solid #949496;
+  border-right: 400px solid #949496;
+  border-left: 400px solid #949496;
+  border-bottom: 5px solid #949496;
+  bottom: 10px;
+  right: -70px;
+} */
+
+.carrito {
+    text-align: right;
+    font-size: 2.5em;
+    color: #707072;
+    font-family: "Inconsolata";
+    padding-top: 10px;
+}
+
+.container-slider {
+    margin: 50px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.slider {
+    display: flex;
+    width: 400%;
+    height: 1200px;
+    margin-left: -100%;
+    position: relative;
+}
+
+.slider:before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    height: 100%;
+}
+
+.slider__section {
+    width: 100%;
+    position: relative;
+}
+
+.btn-shop {
+    display: block;
+    border: 2px solid #FF4E00;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    width: 150px;
+    margin: 20px auto;
+    transition: all 0.5s;
+}
+
+.btn-shop:hover {
+    background: #FF4E00;
+    color: white;
+}
+
+
+/* .slider__link{
+    display: block;
+    border: 1px solid orangered;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    width: 150px;
+    margin: 20px auto;
+    text-decoration: none !important;
+} */
+
+
+/* Estilos de productos */
+
+.container-products {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 30px;
+}
+
+@media screen and (max-width:1186px) {
+    .container-products {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 30px;
+    }
+    .card-estilo {
+        width: 250% !important;
+        height: 100% !important;
+    }
+}
+
+@media screen and (max-width:992px) {
+    .container-products {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 30px;
+    }
+    .card-estilo {
+        width: 250% !important;
+        height: 100% !important;
+    }
+}
+
+@media screen and (max-width:746px) {
+    .container-products {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 30px;
+    }
+    .card-estilo {
+        width: 100% !important;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .container-products {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 30px;
+    }
+    .card-estilo {
+        width: 80% !important;
+        height: 100% !important;
+    }
+}
+
+@media screen and (max-width:448px) {
+    .container-products {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 5px;
+    }
+    .card-estilo {
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+.product {
+    border: 3px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    position: relative;
+}
+
+.product:before {
+    content: "New";
+    background: orangered;
+    padding: 10px;
+    width: 90px;
+    position: absolute;
+    top: 22px;
+    right: 70%;
+    transform: rotate(-90deg);
+    color: white;
+}
+
+.product__img {
+    width: 100%;
+    height: 80%;
+    object-fit: cover;
+}
+
+.product__title {
+    text-align: center;
+    font-family: "Inconsolata";
+    color: rgb(131, 127, 127);
+}
+
+.product__price {
+    text-align: center;
+    font-size: 1.5em;
+    color: #3d9e17;
+}
+
+.icono {
+    display: block;
+    text-align: center;
+}
+
+.product:hover .product__icon {
+    color: #3d9e17;
+}
+
+.imagen-slider {
+    width: 100% !important;
+}
+
+
+/* nuevo */
+
+
+/* 
+@media screen and (min-width:1024px) { 
+    
+    .container-products {
+        grid-template-columns: repeat(1, 1fr);
+        width: 100%;
+        grid-gap: 25px;
+    }
+    
+} */
+
+@media screen and (min-width:1280px) {
+    .container {
+        width: 1200px;
+    }
+    .main-header__container:nth-child(3) {
+        padding-left: 60px;
+    }
+    .main-header__container:nth-child(2) {
+        font-size: 1.3em;
+    }
+    .slider {
+        height: 500px;
+        font-size: 1.5em;
+    }
+}
+
+@media screen and (min-width:1600px) {
+    .container {
+        width: 1140px;
+    }
+}
+
+@media screen and (max-width:770px) {
+    .titulo_marca {
+        text-align: left;
+    }
+    .carrito {
+        text-align: left;
+    }
+}
+
+@media screen and (min-width:1280px) {
+    .slider {
+        height: 1200px;
+        font-size: 1.5em;
+    }
+}
+
+@media screen and (min-width:1199px) {
+    .slider {
+        height: 1200px;
+        font-size: 1.5em;
+    }
+    .titulo_marca {
+        text-align: center;
+    }
+    .carrito {
+        text-align: right;
+    }
+}
+
+@media screen and (max-width:1199px) {
+    .slider {
+        height: 1200px;
+        font-size: 1.5em;
+    }
+    .titulo_marca {
+        text-align: left;
+    }
+    .carrito {
+        text-align: left;
+    }
+}
+
+@media screen and (max-width:1600px) {
+    .slider {
+        height: 500px;
+    }
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+
+.grid-item {
+    text-align: center;
+}
+
+@media (max-width: 1050px) {
+    .grid-container {
+        display: grid;
+        grid-template-columns: auto auto;
+    }
+}
+@media (max-width: 600px) {
+    .grid-container {
+        display: grid;
+        grid-template-columns: auto;
+    }
+}
+
+mat-card{
+    text-align: center;
+    height: 420px;
+    width: 350px;
+}
+
+.example-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.example-is-mobile .example-toolbar {
+    position: fixed;
+    /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+    z-index: 2;
+}
+
+h1.example-app-name {
+    margin-left: 8px;
+}
+
+.example-sidenav-container {
+    /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
+       causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
+    flex: 1;
+}
+
+.example-is-mobile .example-sidenav-container {
+    /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+       `<body>` to be our scrolling element for mobile layouts. */
+    flex: 1 0 auto;
+}
+
+.contenido {
+    min-height: 550px;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+  }
+  
+mat-sidenav {
+    width: 350px;
+}

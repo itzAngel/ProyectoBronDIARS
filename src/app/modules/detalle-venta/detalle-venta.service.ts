@@ -10,6 +10,7 @@ import { DetalleVenta } from 'src/app/models/detalle-venta';
 export class DetalleVentaService extends BaseService{
 
   detalleVenta:DetalleVenta = new DetalleVenta();
+  listaDetallesCarrito: DetalleVenta[] = [];
   constructor(public http: HttpClient,public router : Router) {
     super(http,router);
     this.Url = this.Url + "detalleventa"

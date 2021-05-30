@@ -1,102 +1,214 @@
-<div class="container" *ngIf="lista">
-    <div class="row mt-4">
+<div *ngIf="loggeadoClient">
+    <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
         <mat-toolbar>
+            <button *ngIf="!vistaCliente" mat-button routerLink="../">
+                <mat-icon>reply</mat-icon>Regresar</button>
             <span>Lista de Productos</span>
-            <span style="flex: 1 1 auto;"></span>
-            <button mat-button *ngIf="loggeado" class="example-icon" (click)="agregar()">
-                <mat-icon>add_circle</mat-icon>Agregar
-            </button>
+            <span class="example-spacer"></span>
+            <div *ngIf="!vistaCliente && loggeadoClient" >
+                <button mat-button [matMenuTriggerFor]="menuLogin" ><span *ngIf="clienteSesion != null">{{clienteSesion.nombre}}</span>
+                    <mat-icon>person</mat-icon>
+                  </button>
+                  <mat-menu #menuLogin="matMenu">
+                    <button mat-menu-item *ngIf="loggeadoClient" (click)="cerrarSesion()">
+                        <mat-icon>dialpad</mat-icon>
+                        <span>Cerrar Sesion</span>
+                      </button>
+                  </mat-menu>
+            </div>
+            <div>
+                <button mat-button *ngIf="!vistaCliente && loggeadoClient" (click)="snav.toggle()"><mat-icon>shopping_cart</mat-icon>Carrito</button>
+            </div>
         </mat-toolbar>
-        <div name="filtros" class="row mt-4">
-            <div class="col-md-4 mb-3">
-                <mat-form-field style="width: 250px;">
-                    <mat-select placeholder="Categoria" [(ngModel)]="categoriaFiltro">
-                        <mat-option *ngFor="let obj of categorias" [value]="obj">
-                            {{obj.categoria}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="col-md-4 mb-3">
-                <input type="text" placeholder="Ingrese modelo" class="form-control" [(ngModel)]="modeloFiltro">
-            </div>
-            <div class="col-md-4 mb-3">
-                <button mat-raised-button color="primary" (click)="filtrar()">Aplicar Filtros</button> &nbsp;&nbsp;&nbsp;
-                <button mat-raised-button color="accent" (click)="limpiarFiltros()">Limpiar Filtros</button>
-            </div>
-        </div>
-        <div class="grid-container">
-            <div class="grid-item" *ngFor="let producto of productos">
-                <mat-card class="example-card mt-4" [routerLink]="['../producto', producto.id_producto]">
-                    <mat-card-header>
-                      <mat-card-title>{{producto.categoria.categoria}} {{producto.modelo}} {{producto.genero}}</mat-card-title>
-                      <mat-card-subtitle>Precio: S/.{{producto.precio}}</mat-card-subtitle>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <img src="{{producto.foto}}" style="width: 200px; height: 200px;">
-                    </mat-card-content>
-                    <mat-card-actions>
-                        <button type="button" class="btn btn-primary" *ngIf="!loggeadoClient" routerLink="../login" >Comprar</button>
-                        <button type="button" class="btn btn-primary" *ngIf="loggeadoClient" routerLink="../registrarVenta">Comprar</button>
-                        <br><br>
-                        <div *ngIf="loggeado">
-                            <button type="button" class="btn btn-primary" (click)="Editar(producto)">Editar</button> &nbsp;
-                            <button type="button" class="btn btn-danger" (click)="Eliminar(producto)">Eliminar</button>
+        <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0" [hasBackdrop]="true">
+            <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" position="end">
+                <mat-nav-list>
+                    <mat-tab-group>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <mat-icon class="example-tab-icon">shopping_bag</mat-icon>
+                                Bolsa de compra
+                            </ng-template>
+                            <mat-list>
+                                <div mat-subheader>Productos</div>
+                                <mat-list-item *ngFor="let prod of service.listaCarrito">
+                                    {{prod.categoria.categoria}} - {{prod.modelo}} &nbsp; &nbsp;&nbsp;
+                                    <button type="button" class="btn btn-danger" *ngIf="loggeadoClient" (click)="quitarProd(prod)">Quitar</button>
+                                    <mat-divider></mat-divider>
+                                </mat-list-item>
+                            </mat-list>
+                            <button mat-button color="warn" *ngIf="loggeadoClient" routerLink="../registrarVenta">Continuar mi compra</button>
+                        </mat-tab>
+                        <mat-tab>
+                            <ng-template mat-tab-label>
+                                <mat-icon class="example-tab-icon">favorite</mat-icon>
+                                Favoritos
+                            </ng-template>
+                        </mat-tab>
+                      </mat-tab-group>
+                </mat-nav-list>
+            </mat-sidenav>
+    
+            <mat-sidenav-content>
+                <main class="main">
+                    <div class="container">
+                        <div name="filtros" class="row mt-4">
+                            <div class="col-md-4 mb-3">
+                                <mat-form-field style="width: 250px;">
+                                    <mat-select placeholder="Categoria" [(ngModel)]="categoriaFiltro">
+                                        <mat-option *ngFor="let obj of categorias" [value]="obj">
+                                            {{obj.categoria}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <input type="text" placeholder="Ingrese modelo" class="form-control" [(ngModel)]="modeloFiltro">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <button mat-raised-button color="primary" (click)="filtrar()">Aplicar Filtros</button> &nbsp;&nbsp;&nbsp;
+                                <button mat-raised-button color="accent" (click)="limpiarFiltros()">Limpiar Filtros</button>
+                            </div>
                         </div>
-                    </mat-card-actions>
-                  </mat-card>
-            </div>
-        </div>
+                        <div class="grid-container">
+                            <div class="grid-item" *ngFor="let producto of productos">
+                                <mat-card class="example-card mt-4" >
+                                    <mat-card-header>
+                                    <mat-card-title>{{producto.categoria.categoria}} {{producto.modelo}} {{producto.genero}}</mat-card-title>
+                                    </mat-card-header>
+                                    <mat-card-content>
+                                        <img src="{{producto.foto}}" style="width: 200px; height: 200px;" [routerLink]="['../producto', producto.id_producto]">
+                                        <br><br>
+                                        <h3>Precio: S/.{{producto.precio}}</h3>
+                                    </mat-card-content>
+                                    <mat-card-actions>
+                                        <button mat-button color="accent" *ngIf="!vistaCliente && loggeadoClient" (click)="comprar(producto)">
+                                            <mat-icon>shopping_cart</mat-icon>Agregar al carrito</button>
+                                        <button type="button" class="btn btn-primary" *ngIf="vistaCliente" [routerLink]="['../producto', producto.id_producto]">Comprar</button>
+                                    </mat-card-actions>
+                                </mat-card>
+                            </div>
+                        </div>
+                        <footer class="py-4 bg-light mt-auto">
+                            <div class="container-fluid">
+                                <div class="d-flex align-items-center justify-content-between small">
+                                    <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                                    <div>
+                                        <a href="#">Privacy Policy</a> &middot;
+                                        <a href="#">Terms &amp; Conditions</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
+                </main>
+            </mat-sidenav-content>
+        </mat-sidenav-container>
     </div>
 </div>
-<div class="container" *ngIf="!lista">
-    <div class="card mt-4">
-        <div class="card-header">
-            <span *ngIf="!editar">Agregar Producto</span>
-            <span *ngIf="editar">Editar Producto</span>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-12 mb-3">
-                    <input type="text" placeholder="Ingrese modelo" class="form-control" name="modelo" #modelo="ngModel" [(ngModel)]="producto.modelo">
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-6 mb-3">
+<div *ngIf="!loggeadoClient">
+    <div class="container" *ngIf="lista">
+        <div class="row mt-4">
+            <mat-toolbar>
+                <button *ngIf="!vistaCliente" mat-button routerLink="../">
+                    <mat-icon>reply</mat-icon>Regresar</button>
+                <span>Lista de Productos</span>
+                <span style="flex: 1 1 auto;"></span>
+                <button mat-button *ngIf="loggeado" class="example-icon" (click)="agregar()">
+                    <mat-icon>add_circle</mat-icon>Agregar
+                </button>
+            </mat-toolbar>
+            <div name="filtros" class="row mt-4">
+                <div class="col-md-4 mb-3">
                     <mat-form-field style="width: 250px;">
-                        <mat-select placeholder="Genero" name="gene" #gene="ngModel" [(ngModel)]="producto.genero">
-                            <mat-option *ngFor="let obj of generos" [value]="obj.value">
-                                {{obj.viewValue}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <mat-form-field style="width: 250px;">
-                        <mat-select placeholder="Categoria" name="category" #category="ngModel" [(ngModel)]="producto.categoria.id_categoria">
-                            <mat-option *ngFor="let obj of categorias" [value]="obj.id_categoria">
+                        <mat-select placeholder="Categoria" [(ngModel)]="categoriaFiltro">
+                            <mat-option *ngFor="let obj of categorias" [value]="obj">
                                 {{obj.categoria}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-12 mb-3">
-                    <input type="number" placeholder="Ingrese Precio" class="form-control" name="precio" #precio="ngModel" [(ngModel)]="producto.precio">
+                <div class="col-md-4 mb-3">
+                    <input type="text" placeholder="Ingrese modelo" class="form-control" [(ngModel)]="modeloFiltro">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <button mat-raised-button color="primary" (click)="filtrar()">Aplicar Filtros</button> &nbsp;&nbsp;&nbsp;
+                    <button mat-raised-button color="accent" (click)="limpiarFiltros()">Limpiar Filtros</button>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-6 text-center" *ngIf="!editar">
-                    <button type="button" class="btn btn-danger" (click)="Guardar(producto)">Guardar Producto</button>
+            <div class="grid-container">
+                <div class="grid-item" *ngFor="let producto of productos">
+                    <mat-card class="example-card mt-4" [routerLink]="['../producto', producto.id_producto]">
+                        <mat-card-header>
+                          <mat-card-title>{{producto.categoria.categoria}} {{producto.modelo}} {{producto.genero}}</mat-card-title>
+                          <mat-card-subtitle>Precio: S/.{{producto.precio}}</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <img src="{{producto.foto}}" style="width: 200px; height: 200px;">
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button type="button" class="btn btn-primary" *ngIf="!loggeadoClient" routerLink="../login">Comprar</button>
+                            <button type="button" class="btn btn-primary" *ngIf="loggeadoClient" (click)="comprar(producto)">Comprar</button>
+                            <br><br>
+                            <div *ngIf="loggeado">
+                                <button type="button" class="btn btn-primary" (click)="Editar(producto)">Editar</button> &nbsp;
+                                <button type="button" class="btn btn-danger" (click)="Eliminar(producto)">Eliminar</button>
+                            </div>
+                        </mat-card-actions>
+                      </mat-card>
                 </div>
-                <div class="col-6 text-center" *ngIf="editar">
-                    <button type="button" class="btn btn-danger" (click)="Actualizar(producto)">Editar Producto</button>
+            </div>
+        </div>
+    </div>
+    <div class="container" *ngIf="!lista">
+        <div class="card mt-4">
+            <div class="card-header">
+                <span *ngIf="!editar">Agregar Producto</span>
+                <span *ngIf="editar">Editar Producto</span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <input type="text" placeholder="Ingrese modelo" class="form-control" name="modelo" #modelo="ngModel" [(ngModel)]="producto.modelo">
+                    </div>
                 </div>
-                <div class="col-6 text-center">
-                    <button type="button" class="btn btn-primary" (click)="limpiar()">Limpiar Formulario</button>
+                <br>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <mat-form-field style="width: 250px;">
+                            <mat-select placeholder="Genero" name="gene" #gene="ngModel" [(ngModel)]="producto.genero">
+                                <mat-option *ngFor="let obj of generos" [value]="obj.value">
+                                    {{obj.viewValue}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <mat-form-field style="width: 250px;">
+                            <mat-select placeholder="Categoria" name="category" #category="ngModel" [(ngModel)]="producto.categoria.id_categoria">
+                                <mat-option *ngFor="let obj of categorias" [value]="obj.id_categoria">
+                                    {{obj.categoria}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <input type="number" placeholder="Ingrese Precio" class="form-control" name="precio" #precio="ngModel" [(ngModel)]="producto.precio">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 text-center" *ngIf="!editar">
+                        <button type="button" class="btn btn-danger" (click)="Guardar(producto)">Guardar Producto</button>
+                    </div>
+                    <div class="col-6 text-center" *ngIf="editar">
+                        <button type="button" class="btn btn-danger" (click)="Actualizar(producto)">Editar Producto</button>
+                    </div>
+                    <div class="col-6 text-center">
+                        <button type="button" class="btn btn-primary" (click)="limpiar()">Limpiar Formulario</button>
+                    </div>
                 </div>
             </div>
         </div>

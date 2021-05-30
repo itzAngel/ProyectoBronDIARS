@@ -13,6 +13,7 @@ export class ClientAuthServiceService {
   urlbase = environment.url;
   Url=this.urlbase + "/cliente/login";
   isLoggedCliente:boolean = false;
+  clienteSesion: Cliente = new Cliente();
   constructor(public http:HttpClient) { }
 
   auth(user: string, pass: string){

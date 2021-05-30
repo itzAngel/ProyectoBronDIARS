@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -24,6 +25,7 @@ export class ProductoComponent extends BaseComponent implements OnInit {
   lista: boolean = true;
   producto: Producto = new Producto();
   productos: Producto[] = [];
+  listaCarrito: Producto[] = [];
   categorias: Categoria[] = [];
   editar: boolean = false;
   generos: Genero[] = [
@@ -33,11 +35,19 @@ export class ProductoComponent extends BaseComponent implements OnInit {
   productosBus: Producto[] = [];
   categoriaFiltro: Categoria = null;
   modeloFiltro: string = null;
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
   constructor(public dialog: MatDialog, public _snackBar: MatSnackBar,
     public router:Router, public route: ActivatedRoute,public service: ProductoService,
     public categoriaservice: CategoriaService, public detalleProductoService: DetalleProductoService,
-    public imgservice: ImagenService) { 
+    public imgservice: ImagenService,changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) { 
       super(dialog,_snackBar,router,route);
+      this.mobileQuery = media.matchMedia('(max-width: 600px)');
+      this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+      this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
   ngOnInit(): void {
@@ -47,6 +57,9 @@ export class ProductoComponent extends BaseComponent implements OnInit {
     this.listar();
     this.limpiar();
     this.checkLogin();
+    if(JSON.parse(localStorage.getItem('listaCarrito')) != null){
+      this.service.listaCarrito = JSON.parse(localStorage.getItem('listaCarrito'));
+    }
   }
   listar(){
     this.lista=true;
@@ -72,36 +85,40 @@ export class ProductoComponent extends BaseComponent implements OnInit {
     this.producto = new Producto();
   }
   filtrar(){
-    this.service.getList().subscribe(data => {
-      this.productos = data;
-      if(this.categoriaFiltro != null){
-        this.productosBus=[];
-        for (let obj of this.productos) {
-            if (obj.categoria.id_categoria == this.categoriaFiltro.id_categoria) {
-              this.productosBus.push(obj);
-            };
-        };
-        this.productos=this.productosBus;
-      }
-      if(this.modeloFiltro != null){
-        this.productosBus=[];
-        for (let obj of this.productos) {
-            if (obj.modelo.toLocaleLowerCase().includes(this.modeloFiltro)) {
-              this.productosBus.push(obj);
-            };
-        };
-        this.productos=this.productosBus;
-      }
-      this.productos.forEach(pro => {
-        this.imgservice.obtenerlistaporid(pro.id_producto).subscribe(data => {
-          pro.listaImagen = data;
-          pro.listaImagen.forEach(element => {
-            element.base64 = 'data:image/jpg;base64,' + element.base64;
-            pro.foto=element.base64;
+    if(this.categoriaFiltro == null && this.modeloFiltro == null){
+      this.openSnackBar("Complete algun campo para filtrar los productos");
+    }else{
+      this.service.getList().subscribe(data => {
+        this.productos = data;
+        if(this.categoriaFiltro != null){
+          this.productosBus=[];
+          for (let obj of this.productos) {
+              if (obj.categoria.id_categoria == this.categoriaFiltro.id_categoria) {
+                this.productosBus.push(obj);
+              };
+          };
+          this.productos=this.productosBus;
+        }
+        if(this.modeloFiltro != null){
+          this.productosBus=[];
+          for (let obj of this.productos) {
+              if (obj.modelo.toLocaleLowerCase().includes(this.modeloFiltro.toLocaleLowerCase())) {
+                this.productosBus.push(obj);
+              };
+          };
+          this.productos=this.productosBus;
+        }
+        this.productos.forEach(pro => {
+          this.imgservice.obtenerlistaporid(pro.id_producto).subscribe(data => {
+            pro.listaImagen = data;
+            pro.listaImagen.forEach(element => {
+              element.base64 = 'data:image/jpg;base64,' + element.base64;
+              pro.foto=element.base64;
+            });
           });
         });
       });
-    });
+    }
   }
 
   limpiarFiltros(){
@@ -174,6 +191,45 @@ export class ProductoComponent extends BaseComponent implements OnInit {
       }
     );
   }
-  
 
+  cerrarSesion(){
+    localStorage.removeItem('isLogged');
+    localStorage.removeItem('isLoggedCliente');
+    localStorage.removeItem('listaCarrito');
+    location.reload();
+  }
+  
+  comprar(producto: Producto){
+    var noexec:boolean = false;
+    if(this.service.listaCarrito != null){
+      this.service.listaCarrito.forEach(element => {
+        if(producto.id_producto == element.id_producto){
+          noexec = true;
+        }
+      });
+      if(!noexec){
+        localStorage.removeItem('listaCarrito');
+        this.service.listaCarrito.push(producto);
+        localStorage.setItem('listaCarrito', JSON.stringify(this.service.listaCarrito));
+      }else{
+        this.openSnackBar("El producto ya fue agregado al carrito");
+      }
+    }else{
+      localStorage.removeItem('listaCarrito');
+      this.service.listaCarrito = [];
+      this.service.listaCarrito.push(producto);
+      localStorage.setItem('listaCarrito', JSON.stringify(this.service.listaCarrito));
+    }
+  }
+  quitarProd(prod:Producto){
+    this.service.listaCarrito.forEach(element => {
+      if(element.id_producto!=prod.id_producto){
+        this.listaCarrito.push(element);
+      }
+    });
+    this.service.listaCarrito = this.listaCarrito;
+    localStorage.removeItem('listaCarrito');
+    localStorage.setItem('listaCarrito', JSON.stringify(this.service.listaCarrito));
+    this.listaCarrito=[];
+  }
 }

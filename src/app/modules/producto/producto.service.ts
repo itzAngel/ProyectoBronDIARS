@@ -9,7 +9,7 @@ import { Producto } from 'src/app/models/producto';
   providedIn: 'root'
 })
 export class ProductoService extends BaseService{
-
+  listaCarrito: Producto[] = [];
   producto:Producto = new Producto();
   constructor(public http: HttpClient,public router : Router) {
     super(http,router);

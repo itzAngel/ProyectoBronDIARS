@@ -21,3 +21,15 @@ mat-card{
     height: 420px;
     width: 350px;
 }
+.example-spacer {
+    flex: 1 1 auto;
+  }
+
+  .continuarCompra {
+    position:relative;
+    left:0px;
+    bottom:0px;
+    height:30px;
+    width:100%;
+    background:#999;
+ }

@@ -10,6 +10,7 @@ import { CategoriaService } from '../modules/categoria/categoria.service';
 import { DetalleProductoService } from '../modules/detalle-producto/detalle-producto.service';
 import { ImagenService } from '../modules/imagen/imagen.service';
 import { ProductoService } from '../modules/producto/producto.service';
+import { ClientAuthServiceService } from '../services/auth/client-auth-service.service';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
 
   producto: Producto = new Producto();
   productos: Producto[] = [];
+  listaCarrito: Producto[] = [];
   categorias: Categoria[] = [];
   productosBus: Producto[] = [];
   categoriaFiltro: Categoria = null;
@@ -29,7 +31,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
   constructor(public dialog: MatDialog, public _snackBar: MatSnackBar,public categoriaservice: CategoriaService,
     public router:Router, public route: ActivatedRoute, public service: ProductoService,
      public detalleProductoService: DetalleProductoService,public imgservice: ImagenService,
-     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,public clientservice:ClientAuthServiceService) {
     super(dialog,_snackBar,router,route);
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -43,6 +45,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
   cerrarSesion(){
     localStorage.removeItem('isLogged');
     localStorage.removeItem('isLoggedCliente');
+    localStorage.removeItem('listaCarrito');
     location.reload();
   }
   
@@ -52,8 +55,10 @@ export class HomeComponent extends BaseComponent implements OnInit {
     });
     this.listar();
     this.checkLogin();
+    if(JSON.parse(localStorage.getItem('listaCarrito')) != null){
+      this.service.listaCarrito = JSON.parse(localStorage.getItem('listaCarrito'));
+    }
   }
-
   filtrar(){
     this.service.getList().subscribe(data => {
       this.productos = data;
@@ -111,9 +116,15 @@ export class HomeComponent extends BaseComponent implements OnInit {
       });
     });
   }
-
-  comprar(){
-
+  quitarProd(prod:Producto){
+    this.service.listaCarrito.forEach(element => {
+      if(element.id_producto!=prod.id_producto){
+        this.listaCarrito.push(element);
+      }
+    });
+    this.service.listaCarrito = this.listaCarrito;
+    localStorage.removeItem('listaCarrito');
+    localStorage.setItem('listaCarrito', JSON.stringify(this.service.listaCarrito));
+    this.listaCarrito=[];
   }
-
 }

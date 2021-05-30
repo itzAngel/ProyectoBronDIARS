@@ -74,6 +74,7 @@ export class VentaComponent extends BaseComponent implements OnInit {
     venta.fecha_venta = new Date;
     venta.precio_total = 0;
     venta.listaDetalleVenta = [];
+    venta.fecha_entrega.setDate(venta.fecha_venta.getDate() + 5);
     /*
     this.detalles.forEach(element => {
       this.venta.precio_total += element.cantidad * element.precio;

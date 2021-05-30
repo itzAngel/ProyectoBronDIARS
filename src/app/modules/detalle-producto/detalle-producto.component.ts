@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from 'src/app/base/base.component';
 import { DetalleProducto } from 'src/app/models/detalle-producto';
 import { Producto } from 'src/app/models/producto';
+import { AsignaProductoTiendaService } from '../asigna-producto-tienda/asigna-producto-tienda.service';
 import { ProductoService } from '../producto/producto.service';
 import { DetalleProductoService } from './detalle-producto.service';
 @Component({
@@ -16,11 +17,15 @@ export class DetalleProductoComponent extends BaseComponent implements OnInit {
 
   detalleProducto: DetalleProducto = new DetalleProducto();
   detalleProductos: DetalleProducto[] = [];
+  detalleProductosxListaCarrito: DetalleProducto[] = [];
+  detalleProdParaCarrito: DetalleProducto = new DetalleProducto();
   editar: boolean = false;
   productos: Producto[] = [];
+  @Input("externo") 
+  externo: boolean = false;
   constructor(public dialog: MatDialog, public _snackBar: MatSnackBar,
     public router:Router, public route: ActivatedRoute,public service: DetalleProductoService,
-     public productoservice: ProductoService) { 
+     public productoservice: ProductoService, public asignaService: AsignaProductoTiendaService) { 
       super(dialog,_snackBar,router,route);
   }
 
@@ -35,6 +40,48 @@ export class DetalleProductoComponent extends BaseComponent implements OnInit {
     this.service.getList().subscribe(data => {
       this.detalleProductos = data;
     });
+    if(this.externo){
+      var lista: DetalleProducto[] = [];
+      this.productoservice.listaCarrito.forEach(prod => { //cada producto del carrito
+        this.service.obtenerlistaporid(prod.id_producto).subscribe(data =>{ //obtengo sus detalles
+          lista = data;
+          lista.forEach(element => { 
+            this.detalleProductosxListaCarrito.push(element); //pusheo cada detalle a la lista para eleccion
+          });
+        });
+      });
+    }
+  }
+  GuardarDetalleParaCarrito(detalleProducto: DetalleProducto){
+    if(detalleProducto.id_detalle_producto != null){
+        var exec: boolean = true;
+        this.service.listaDetallesCarrito.forEach(element => {
+          if(element.id_detalle_producto == detalleProducto.id_detalle_producto){
+            exec = false;
+          }
+        });
+        if(exec){
+          this.service.listaDetallesCarrito.push(detalleProducto);
+        }else{
+          this.openSnackBar("Ya agregó ese producto con esas caracteristicas");
+        }
+        this.detalleProdParaCarrito = new DetalleProducto();
+    }else{
+      this.openSnackBar("Escoja un detalle");
+    }
+  }
+  QuitarDetalleParaCarrito(detalleProducto: DetalleProducto){
+    if(detalleProducto.id_detalle_producto != null){
+      var lista: DetalleProducto[] = [];
+      this.service.listaDetallesCarrito.forEach(element => {
+        if(element.id_detalle_producto != detalleProducto.id_detalle_producto){
+          lista.push(element);
+        }
+      });
+      this.service.listaDetallesCarrito = lista;
+    }else{
+      this.openSnackBar("Escoja un detalle");
+    }
   }
   limpiar() {
     this.detalleProducto = new DetalleProducto();

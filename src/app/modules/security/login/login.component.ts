@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from 'src/app/base/base.component';
+import { BaseService } from 'src/app/base/base.service';
 import { Cliente } from 'src/app/models/cliente';
 import { Usuario } from 'src/app/models/usuario';
 import { ClientAuthServiceService } from 'src/app/services/auth/client-auth-service.service';
@@ -25,7 +26,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
   constructor(public dialog: MatDialog, public _snackBar: MatSnackBar,
     public router:Router, public route: ActivatedRoute, public userservice: UserAuthServiceService,
-    public clientservice:ClientAuthServiceService) {
+    public clientservice:ClientAuthServiceService, public baseService: BaseService) {
     super(dialog,_snackBar,router,route);
   }
   ngOnInit(): void {
@@ -65,7 +66,9 @@ export class LoginComponent extends BaseComponent implements OnInit {
           this.openSnackBar("Bienvenido " + this.cliente.nombre);
           this.router.navigate(['home']);
           this.clientservice.isLoggedCliente = true;
+          this.clientservice.clienteSesion = this.cliente;
           localStorage.setItem('isLoggedCliente', JSON.stringify(this.clientservice.isLoggedCliente));
+          localStorage.setItem('clienteSesion', JSON.stringify(this.clientservice.clienteSesion));
         }else{
           this.openSnackBar("Usuario o contraseña incorrectos");
           this.clientservice.isLoggedCliente = false;

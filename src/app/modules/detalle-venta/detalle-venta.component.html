@@ -1,91 +1,156 @@
-<div class="container">
-    <div class="row mt-4">
-        <mat-toolbar>
-            <span>Lista de Detalle Venta</span>
-            <span style="flex: 1 1 auto;"></span>
-            <button mat-button class="example-icon" (click)="agregar()">
-                <mat-icon>add_circle</mat-icon>Agregar
-            </button>
-        </mat-toolbar>
-        <table class="table caption-top ">
-            <caption>Lista de Detalle Venta</caption>
-            <thead class="table-dark">
-                <tr>
-                    <th scope="col">Venta</th>
-                    <th scope="col">Producto</th>
-                    <th scope="col">Tienda</th>
-                    <th scope="col">Cantidad</th>
-                    <th scope="col">Precio</th>
-                    <th scope="col">Opciones</th>
-                </tr>
-            </thead>
-            <tbody *ngFor="let detalleVenta of detalleVentas">
-                <tr>
-                    <td>{{detalleVenta.venta.id_venta}} {{detalleVenta.venta.cliente.nombre}} {{detalleVenta.venta.fecha}}</td>
-                    <td>{{detalleVenta.asignaProductoTienda.detalleProducto.producto.categoria.categoria}} {{detalleVenta.asignaProductoTienda.detalleProducto.producto.modelo}} {{detalleVenta.asignaProductoTienda.detalleProducto.color}}</td>
-                    <td>{{detalleVenta.asignaProductoTienda.tienda.nombre_tienda}}</td>
-                    <td>{{detalleVenta.cantidad}}</td>
-                    <td>{{detalleVenta.precio}}</td>
-                    <td>
-                        <button type="button" class="btn btn-danger" (click)="Eliminar(detalleVenta)">Eliminar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+<div *ngIf="externo">
+    <div class="container">
+        <div class="row mt-4">
+            <table class="table caption-top ">
+                <caption>Lista de Detalle Venta</caption>
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Tienda</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let detalleVenta of service.listaDetallesCarrito">
+                    <tr>
+                        <td>{{detalleVenta.asignaProductoTienda.detalleProducto.producto.categoria.categoria}} {{detalleVenta.asignaProductoTienda.detalleProducto.producto.modelo}} 
+                            {{detalleVenta.asignaProductoTienda.detalleProducto.color}} {{detalleVenta.asignaProductoTienda.detalleProducto.talla}}</td>
+                        <td>{{detalleVenta.asignaProductoTienda.tienda.nombre_tienda}}</td>
+                        <td>{{detalleVenta.cantidad}}</td>
+                        <td>{{detalleVenta.precio}}</td>
+                        <td>
+                            <button type="button" class="btn btn-danger" (click)="QuitarDetalleParaCarrito(detalleVenta)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="container">
+        <div class="card mt-4">
+            <div class="card-header">
+                <span>Agregar Detalle Venta</span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <mat-form-field style="width: 250px;">
+                            <mat-select placeholder="Producto Disponible" name="asignaProductoTienda" #asignaProductoTienda="ngModel" [(ngModel)]="detalleVentaParaCarrito.asignaProductoTienda.id_asigna_producto_tienda" (ngModelChange)="modelChangeFn($event)">
+                                <mat-option *ngFor="let obj of asignaProductoTiendaservice.listaAsignaFinal" [value]="obj.id_asigna_producto_tienda">
+                                    {{obj.detalleProducto.producto.categoria.categoria}} {{obj.detalleProducto.producto.modelo}} {{obj.detalleProducto.color}} {{obj.detalleProducto.talla}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <br>
+                        <span>Stock maximo: {{asignaSelectedCarrito.cantidad}}</span><br>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <input type="number" placeholder="Ingrese cantidad" class="form-control" name="cantidad" #cantidad="ngModel" [(ngModel)]="detalleVentaParaCarrito.cantidad">
+                    </div>
+                </div>
+                <div class="row" *ngIf="!esExterno">
+                    <div class="col-6 text-center">
+                        <button type="button" class="btn btn-danger" (click)="GuardarDetalleParaCarrito(detalleVentaParaCarrito)">Guardar Detalle Venta</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<div class="container">
-    <div class="card mt-4">
-        <div class="card-header">
-            <span>Agregar Detalle Venta</span>
+<div *ngIf="!externo">
+    <div class="container">
+        <div class="row mt-4">
+            <mat-toolbar>
+                <span>Lista de Detalle Venta</span>
+                <span style="flex: 1 1 auto;"></span>
+                <button mat-button class="example-icon" (click)="agregar()">
+                    <mat-icon>add_circle</mat-icon>Agregar
+                </button>
+            </mat-toolbar>
+            <table class="table caption-top ">
+                <caption>Lista de Detalle Venta</caption>
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Venta</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Tienda</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let detalleVenta of detalleVentas">
+                    <tr>
+                        <td>{{detalleVenta.venta.id_venta}} {{detalleVenta.venta.cliente.nombre}} {{detalleVenta.venta.fecha}}</td>
+                        <td>{{detalleVenta.asignaProductoTienda.detalleProducto.producto.categoria.categoria}} {{detalleVenta.asignaProductoTienda.detalleProducto.producto.modelo}} {{detalleVenta.asignaProductoTienda.detalleProducto.color}}</td>
+                        <td>{{detalleVenta.asignaProductoTienda.tienda.nombre_tienda}}</td>
+                        <td>{{detalleVenta.cantidad}}</td>
+                        <td>{{detalleVenta.precio}}</td>
+                        <td>
+                            <button type="button" class="btn btn-danger" (click)="Eliminar(detalleVenta)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <mat-form-field style="width: 250px;">
-                        <mat-select placeholder="Producto" name="asignaProductoTienda" #asignaProductoTienda="ngModel" [(ngModel)]="detalleVenta.asignaProductoTienda.id_asigna_producto_tienda" (ngModelChange)="modelChangeFn($event)">
-                            <mat-option *ngFor="let obj of asignaProductoTiendas" [value]="obj.id_asigna_producto_tienda">
-                                {{obj.detalleProducto.producto.categoria.categoria}} {{obj.detalleProducto.producto.modelo}} {{obj.detalleProducto.color}} - {{obj.tienda.nombre_tienda}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <br>
-                    <span>Stock: {{asignaSelected.cantidad}}</span><br>
-                    <span>Precio sugerido: {{asignaSelected.detalleProducto.producto.precio}}</span>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <mat-form-field style="width: 250px;">
-                        <mat-select placeholder="Venta" name="venta" #venta="ngModel" [(ngModel)]="detalleVenta.venta.id_venta">
-                            <mat-option *ngFor="let obj of ventas" [value]="obj.id_venta">
-                                id: {{obj.id_venta}}, cliente: {{obj.cliente.nombre}} fecha: {{obj.fecha_venta | date}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
+    </div>
+    <div class="container">
+        <div class="card mt-4">
+            <div class="card-header">
+                <span>Agregar Detalle Venta</span>
             </div>
-            <br>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <input type="number" placeholder="Ingrese cantidad" class="form-control" name="cantidad" #cantidad="ngModel" [(ngModel)]="detalleVenta.cantidad">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <mat-form-field style="width: 250px;">
+                            <mat-select placeholder="Producto" name="asignaProductoTienda" #asignaProductoTienda="ngModel" [(ngModel)]="detalleVenta.asignaProductoTienda.id_asigna_producto_tienda" (ngModelChange)="modelChangeFn($event)">
+                                <mat-option *ngFor="let obj of asignaProductoTiendas" [value]="obj.id_asigna_producto_tienda">
+                                    {{obj.detalleProducto.producto.categoria.categoria}} {{obj.detalleProducto.producto.modelo}} {{obj.detalleProducto.color}} - {{obj.tienda.nombre_tienda}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <br>
+                        <span>Stock: {{asignaSelected.cantidad}}</span><br>
+                        <span>Precio sugerido: {{asignaSelected.detalleProducto.producto.precio}}</span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <mat-form-field style="width: 250px;">
+                            <mat-select placeholder="Venta" name="venta" #venta="ngModel" [(ngModel)]="detalleVenta.venta.id_venta">
+                                <mat-option *ngFor="let obj of ventas" [value]="obj.id_venta">
+                                    id: {{obj.id_venta}}, cliente: {{obj.cliente.nombre}} fecha: {{obj.fecha_venta | date}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <input type="number" placeholder="Ingrese precio" class="form-control" name="precio" #precio="ngModel" [(ngModel)]="detalleVenta.precio">
+                <br>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <input type="number" placeholder="Ingrese cantidad" class="form-control" name="cantidad" #cantidad="ngModel" [(ngModel)]="detalleVenta.cantidad">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <input type="number" placeholder="Ingrese precio" class="form-control" name="precio" #precio="ngModel" [(ngModel)]="detalleVenta.precio">
+                    </div>
                 </div>
-            </div>
-            <div class="row" *ngIf="!esExterno">
-                <div class="col-6 text-center">
-                    <button type="button" class="btn btn-danger" (click)="Guardar(detalleVenta)">Guardar Detalle Venta</button>
+                <div class="row" *ngIf="!esExterno">
+                    <div class="col-6 text-center">
+                        <button type="button" class="btn btn-danger" (click)="Guardar(detalleVenta)">Guardar Detalle Venta</button>
+                    </div>
+                    <div class="col-6 text-center">
+                        <button type="button" class="btn btn-primary" (click)="limpiar()">Limpiar Formulario</button>
+                    </div>
                 </div>
-                <div class="col-6 text-center">
-                    <button type="button" class="btn btn-primary" (click)="limpiar()">Limpiar Formulario</button>
-                </div>
-            </div>
-            <div class="row" *ngIf="esExterno">
-                <div class="col-6 text-center">
-                    <button type="button" class="btn btn-danger" (click)="addNewItem(detalleVenta)">Guardar Detalle Venta</button>
-                </div>
-                <div class="col-6 text-center">
-                    <button type="button" class="btn btn-primary" (click)="limpiar()">Limpiar Formulario</button>
+                <div class="row" *ngIf="esExterno">
+                    <div class="col-6 text-center">
+                        <button type="button" class="btn btn-danger" (click)="addNewItem(detalleVenta)">Guardar Detalle Venta</button>
+                    </div>
+                    <div class="col-6 text-center">
+                        <button type="button" class="btn btn-primary" (click)="limpiar()">Limpiar Formulario</button>
+                    </div>
                 </div>
             </div>
         </div>

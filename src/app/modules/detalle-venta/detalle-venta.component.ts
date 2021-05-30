@@ -21,10 +21,15 @@ export class DetalleVentaComponent extends BaseComponent implements OnInit {
   @Input() esExterno: boolean = false;
   @Input() idExterno: number = 0;
   @Output() newItemEvent = new EventEmitter<DetalleVenta>();
+  @Input("externo") 
+  externo: boolean = false;
+  detalleVentasxListaCarrito: DetalleVenta[] = [];
+  detalleVentaParaCarrito: DetalleVenta = new DetalleVenta();
   detalleVenta: DetalleVenta = new DetalleVenta();
   detalleVentas: DetalleVenta[] = [];
   ventas: Venta[] = [];
   asignaSelected: AsignaProductoTienda = new AsignaProductoTienda();
+  asignaSelectedCarrito: AsignaProductoTienda = new AsignaProductoTienda();
   asignaProductoTiendas: AsignaProductoTienda[] = [];
   constructor(public dialog: MatDialog, public _snackBar: MatSnackBar,
     public router:Router, public route: ActivatedRoute,public service: DetalleVentaService,
@@ -79,6 +84,51 @@ export class DetalleVentaComponent extends BaseComponent implements OnInit {
     this.limpiar();
   }
 
+
+  //para externo
+  GuardarDetalleParaCarrito(detalleVentaParaCarrito: DetalleVenta){
+    if(detalleVentaParaCarrito.asignaProductoTienda.id_asigna_producto_tienda != null){
+        var exec: boolean = true;
+        this.service.listaDetallesCarrito.forEach(element => {
+          if(element.asignaProductoTienda.id_asigna_producto_tienda == detalleVentaParaCarrito.asignaProductoTienda.id_asigna_producto_tienda){
+            exec = false;
+          }
+        });
+        if(exec){
+          if(detalleVentaParaCarrito.cantidad <= this.asignaSelectedCarrito.cantidad){
+            detalleVentaParaCarrito.precio=this.asignaSelectedCarrito.detalleProducto.producto.precio;
+            this.asignaProductoTiendaservice.getObjById(this.asignaSelectedCarrito.id_asigna_producto_tienda).subscribe(data=>{
+              detalleVentaParaCarrito.asignaProductoTienda = data;
+            })
+            this.service.listaDetallesCarrito.push(detalleVentaParaCarrito);
+          }else{
+            this.openSnackBar("La cantidad excede al stock para este producto");
+          }
+        }else{
+          this.openSnackBar("Ya agregó ese producto con esas caracteristicas");
+        }
+        this.detalleVentaParaCarrito = new DetalleVenta();
+    }else{
+      this.openSnackBar("Agregue un detalle");
+    }
+  }
+  QuitarDetalleParaCarrito(detalleVentaParaCarrito: DetalleVenta){
+    if(detalleVentaParaCarrito.asignaProductoTienda.id_asigna_producto_tienda != null){
+      var lista: DetalleVenta[] = [];
+      this.service.listaDetallesCarrito.forEach(element => {
+        if(element.asignaProductoTienda.id_asigna_producto_tienda != detalleVentaParaCarrito.asignaProductoTienda.id_asigna_producto_tienda){
+          lista.push(element);
+        }
+      });
+      this.service.listaDetallesCarrito = lista;
+    }else{
+      this.openSnackBar("Escoja un detalle");
+    }
+  }
+
+
+
+
   Guardar(detalleVenta: DetalleVenta) {
     if (this.validar()) {
       if(detalleVenta.cantidad>this.asignaSelected.cantidad){ //si la cantidad comprada es mayor al stock
@@ -120,6 +170,7 @@ export class DetalleVentaComponent extends BaseComponent implements OnInit {
   modelChangeFn(e) {
     this.asignaProductoTiendaservice.getObjById(e).subscribe(data => {
       this.asignaSelected = data;
+      this.asignaSelectedCarrito = data;
     });
     
   }

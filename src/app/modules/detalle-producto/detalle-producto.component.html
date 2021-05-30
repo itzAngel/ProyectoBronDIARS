@@ -1,78 +1,132 @@
-<div class="container">
-    <div class="row mt-4">
-        <mat-toolbar>
-            <span>Lista de Detalle Producto</span>
-            <span style="flex: 1 1 auto;"></span>
-            <button mat-button class="example-icon" (click)="agregar()">
-                <mat-icon>add_circle</mat-icon>Agregar
-            </button>
-        </mat-toolbar>
-        <table class="table caption-top ">
-            <caption>Lista de Detalles de Productos</caption>
-            <thead class="table-dark">
-                <tr>
-                    <th scope="col">Producto</th>
-                    <th scope="col">Talla</th>
-                    <th scope="col">Color</th>
-                    <th scope="col">Opciones</th>
-                </tr>
-            </thead>
-            <tbody *ngFor="let detalleProducto of detalleProductos">
-                <tr>
-                    <td>{{detalleProducto.producto.categoria.categoria}}&nbsp;{{detalleProducto.producto.modelo}}</td>
-                    <td>{{detalleProducto.talla}}</td>
-                    <td>{{detalleProducto.color}}</td>
-                    <td>
-                        <button type="button" class="btn btn-primary" (click)="Editar(detalleProducto)">Editar</button> &nbsp;
-                        <button type="button" class="btn btn-danger" (click)="Eliminar(detalleProducto)">Eliminar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+<div *ngIf="!externo">
+    <div class="container">
+        <div class="row mt-4">
+            <mat-toolbar>
+                <span>Lista de Detalle Producto</span>
+                <span style="flex: 1 1 auto;"></span>
+                <button mat-button class="example-icon" (click)="agregar()">
+                    <mat-icon>add_circle</mat-icon>Agregar
+                </button>
+            </mat-toolbar>
+            <table class="table caption-top ">
+                <caption>Lista de Detalles de Productos</caption>
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Talla</th>
+                        <th scope="col">Color</th>
+                        <th scope="col">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let detalleProducto of detalleProductos">
+                    <tr>
+                        <td>{{detalleProducto.producto.categoria.categoria}}&nbsp;{{detalleProducto.producto.modelo}}</td>
+                        <td>{{detalleProducto.talla}}</td>
+                        <td>{{detalleProducto.color}}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary" (click)="Editar(detalleProducto)">Editar</button> &nbsp;
+                            <button type="button" class="btn btn-danger" (click)="Eliminar(detalleProducto)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="container">
+        <div class="card mt-4">
+            <div class="card-header">
+                <span *ngIf="!editar">Agregar Detalle Producto</span>
+                <span *ngIf="editar">Editar Detalle Producto</span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <mat-form-field style="width: 250px;">
+                            <mat-select placeholder="Producto" name="producto" #producto="ngModel" [(ngModel)]="detalleProducto.producto.id_producto">
+                                <mat-option *ngFor="let obj of productos" [value]="obj.id_producto">
+                                    {{obj.modelo}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <textarea type="text" placeholder="Ingrese descripcion" class="form-control" name="descripcion" #descripcion="ngModel" [(ngModel)]="detalleProducto.descripcion"></textarea>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <input type="number" placeholder="Ingrese talla" class="form-control" name="talla" #talla="ngModel" [(ngModel)]="detalleProducto.talla">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <input type="text" placeholder="Ingrese color" class="form-control" name="color" #color="ngModel" [(ngModel)]="detalleProducto.color">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 text-center" *ngIf="!editar">
+                        <button type="button" class="btn btn-danger" (click)="Guardar(detalleProducto)">Guardar Detalle Producto</button>
+                    </div>
+                    <div class="col-6 text-center" *ngIf="editar">
+                        <button type="button" class="btn btn-danger" (click)="Actualizar(detalleProducto)">Editar Detalle Producto</button>
+                    </div>
+                    <div class="col-6 text-center">
+                        <button type="button" class="btn btn-primary" (click)="limpiar()">Limpiar Formulario</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<div class="container">
-    <div class="card mt-4">
-        <div class="card-header">
-            <span *ngIf="!editar">Agregar Detalle Producto</span>
-            <span *ngIf="editar">Editar Detalle Producto</span>
+<div *ngIf="externo">
+    <div name="lista" class="container">
+        <div class="row mt-4">
+            <table class="table caption-top ">
+                <caption>Lista de Detalles de Productos</caption>
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Talla</th>
+                        <th scope="col">Color</th>
+                        <th scope="col">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let detalleProducto of service.listaDetallesCarrito">
+                    <tr>
+                        <td>{{detalleProducto.producto.categoria.categoria}}&nbsp;{{detalleProducto.producto.modelo}}</td>
+                        <td>{{detalleProducto.talla}}</td>
+                        <td>{{detalleProducto.color}}</td>
+                        <td>
+                            <button type="button" class="btn btn-danger" (click)="QuitarDetalleParaCarrito(detalleProducto)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-12 mb-3">
-                    <mat-form-field style="width: 250px;">
-                        <mat-select placeholder="Producto" name="producto" #producto="ngModel" [(ngModel)]="detalleProducto.producto.id_producto">
-                            <mat-option *ngFor="let obj of productos" [value]="obj.id_producto">
-                                {{obj.modelo}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
+    </div>
+    <div name="agregar" class="container">
+        <div class="card mt-4">
+            <div class="card-header">
+                <span>Agregar caracteristicas de los Productos</span>
             </div>
-            <br>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <textarea type="text" placeholder="Ingrese descripcion" class="form-control" name="descripcion" #descripcion="ngModel" [(ngModel)]="detalleProducto.descripcion"></textarea>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <mat-form-field style="width: 250px;">
+                            <mat-select placeholder="Elija las caracteristicas para su producto" [(ngModel)]="detalleProdParaCarrito">
+                                <mat-option *ngFor="let obj of detalleProductosxListaCarrito" [value]="obj">
+                                    {{obj.producto.modelo}} {{obj.color}} {{obj.talla}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
                 </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <input type="number" placeholder="Ingrese talla" class="form-control" name="talla" #talla="ngModel" [(ngModel)]="detalleProducto.talla">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <input type="text" placeholder="Ingrese color" class="form-control" name="color" #color="ngModel" [(ngModel)]="detalleProducto.color">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6 text-center" *ngIf="!editar">
-                    <button type="button" class="btn btn-danger" (click)="Guardar(detalleProducto)">Guardar Detalle Producto</button>
-                </div>
-                <div class="col-6 text-center" *ngIf="editar">
-                    <button type="button" class="btn btn-danger" (click)="Actualizar(detalleProducto)">Editar Detalle Producto</button>
-                </div>
-                <div class="col-6 text-center">
-                    <button type="button" class="btn btn-primary" (click)="limpiar()">Limpiar Formulario</button>
+                <div class="row">
+                    <div class="col-6 text-center">
+                        <button type="button" class="btn btn-danger" (click)="GuardarDetalleParaCarrito(detalleProdParaCarrito)">Guardar Detalle Producto</button>
+                    </div>
                 </div>
             </div>
         </div>

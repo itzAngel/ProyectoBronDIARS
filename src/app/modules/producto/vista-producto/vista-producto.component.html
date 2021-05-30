@@ -1,5 +1,8 @@
-<div class="container">
-    <button mat-button routerLink="../"><mat-icon>reply</mat-icon>Regresar</button>
+<div class="container mt-4">
+    <mat-toolbar>
+      <button mat-button routerLink="../"><mat-icon>reply</mat-icon>Regresar</button>
+      <span>{{product.modelo}}</span>
+  </mat-toolbar>
     <div class="row mt-4" *ngIf="product">
         <div class="col-md-6">
             <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
@@ -40,6 +43,8 @@
                     <mat-divider></mat-divider>
                 </mat-list-item>
             </mat-list>
+            <button type="button" class="btn btn-primary" *ngIf="!loggeadoClient" routerLink="../../login" >Comprar</button>
+            <button type="button" class="btn btn-primary" *ngIf="loggeadoClient" (click)="comprar(product)" routerLink="../../producto">Comprar</button>
         </div>
     </div>
 </div>

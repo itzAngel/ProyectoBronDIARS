@@ -1,1 +1,101 @@
-<p>registrar-venta works!</p>
+<mat-toolbar>
+  <button mat-button routerLink="../">
+    <mat-icon>reply</mat-icon>Regresar</button>
+  <div>
+      <h1>PROCESO DE COMPRA</h1>
+  </div>
+  <span class="example-spacer"></span>
+</mat-toolbar>
+<mat-horizontal-stepper [linear]="true" #stepper>
+  <mat-step>
+    <form>
+      <ng-template matStepLabel>Carrito productos</ng-template>
+            <mat-vertical-stepper [linear]="true" #stepper>
+              <mat-step>
+                <form>
+                  <ng-template matStepLabel>Elija caracteristicas de productos</ng-template>
+                  <div>
+                    <app-detalle-producto [externo]="true"></app-detalle-producto>
+                  </div>
+                  <div class="mt-2">
+                    <button mat-button matStepperNext>Siguiente</button>
+                  </div>
+                </form>
+              </mat-step>
+              <mat-step>
+                <form>
+                  <ng-template matStepLabel>Elija la tienda</ng-template>
+                  <div *ngIf="validarDetallesCarrito()">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <mat-form-field style="width: 250px;">
+                                <mat-select placeholder="Elija la tienda que en la que desea comprar" name="tienda" #tienda="ngModel" 
+                                [(ngModel)]="selectedTienda" (ngModelChange)="comprobarDisponibilidad()">
+                                    <mat-option *ngFor="let obj of tiendas" [value]="obj">
+                                        Tienda: {{obj.nombre_tienda}} - Distrito: {{obj.distrito}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="mt-2">
+                    <button mat-button matStepperPrevious>Atras</button>
+                    <button mat-button matStepperNext>Siguiente</button>
+                  </div>
+                </form>
+              </mat-step>
+              <mat-step>
+                <form>
+                  <ng-template matStepLabel>Rellene los detalles de Venta</ng-template>
+                  <div *ngIf="validarTienda()">
+                      <app-detalle-venta [externo]="true"></app-detalle-venta>
+                  </div>
+                  <div class="mt-2">
+                    <button mat-button matStepperPrevious>Atras</button>
+                  </div>
+                </form>
+              </mat-step>
+            </mat-vertical-stepper>
+      <div>
+        <button mat-button matStepperNext>Siguiente</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step >
+    <form>
+      <ng-template matStepLabel>Despacho</ng-template>
+
+      <div *ngIf="validarDetallesVentaCarrito()">
+          AAA
+      </div>
+
+      <div class="mt-2">
+        <button mat-button matStepperPrevious>Atras</button>
+        <button mat-button matStepperNext>Siguiente</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step label="Metodo de pago">
+    <form>
+      <mat-form-field>
+        <mat-label>Tarjeta</mat-label>
+        <input matInput placeholder="Ex. 1 Main St, New York, NY"
+               required>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Atras</button>
+        <button mat-button matStepperNext>Siguiente</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Confirmación</ng-template>
+    <p>Estas por confirmar tu compra</p>
+    <div>
+      <button mat-button matStepperPrevious>Atras</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>
+
