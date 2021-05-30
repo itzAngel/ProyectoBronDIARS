@@ -18,7 +18,8 @@
                     <app-detalle-producto [externo]="true"></app-detalle-producto>
                   </div>
                   <div class="mt-2">
-                    <button mat-button matStepperNext>Siguiente</button>
+                    <button type="button" class="btn btn-success" matStepperNext *ngIf="validarDetallesCarrito()">Siguiente</button>
+                    <button type="button" class="btn btn-danger" *ngIf="!validarDetallesCarrito()" (click)="openSnackBar('Escoja un producto con sus caracteristicas')">Siguiente</button>
                   </div>
                 </form>
               </mat-step>
@@ -37,11 +38,19 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
+                        <div class="col-6 text-center">
+                            <button type="button" class="btn btn-primary" (click)="limpiarTienda()">Limpiar Formulario</button>
+                        </div>
                     </div>
                   </div>
+                  <div *ngIf="!validarDetallesCarrito()">
+                    <h1>Complete el paso anterior</h1>
+                  </div>
                   <div class="mt-2">
-                    <button mat-button matStepperPrevious>Atras</button>
-                    <button mat-button matStepperNext>Siguiente</button>
+                    <button type="button" class="btn btn-info" matStepperPrevious>Atras</button>
+                    &nbsp;&nbsp;&nbsp;
+                    <button type="button" class="btn btn-danger" *ngIf="!validarTienda()" (click)="openSnackBar('Escoja una tienda')">Siguiente</button>
+                    <button type="button" class="btn btn-success" *ngIf="validarTienda()"matStepperNext>Siguiente</button>
                   </div>
                 </form>
               </mat-step>
@@ -51,14 +60,18 @@
                   <div *ngIf="validarTienda()">
                       <app-detalle-venta [externo]="true"></app-detalle-venta>
                   </div>
+                  <div *ngIf="!validarTienda()">
+                    <h1>Complete el paso anterior</h1>
+                  </div>
                   <div class="mt-2">
-                    <button mat-button matStepperPrevious>Atras</button>
+                    <button type="button" class="btn btn-info" matStepperPrevious>Atras</button>
                   </div>
                 </form>
               </mat-step>
             </mat-vertical-stepper>
       <div>
-        <button mat-button matStepperNext>Siguiente</button>
+        <button type="button" class="btn btn-success" *ngIf="validarDetallesVentaCarrito()" matStepperNext>Siguiente</button>
+        <button type="button" class="btn btn-danger" *ngIf="!validarDetallesVentaCarrito()" (click)="openSnackBar('Rellene los detalles de Venta')">Siguiente</button>
       </div>
     </form>
   </mat-step>

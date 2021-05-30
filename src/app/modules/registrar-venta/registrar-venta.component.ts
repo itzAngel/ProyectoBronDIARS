@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from 'src/app/base/base.component';
 import { AsignaProductoTienda } from 'src/app/models/asigna-producto-tienda';
+import { Categoria } from 'src/app/models/categoria';
 import { Tienda } from 'src/app/models/tienda';
 import { AsignaProductoTiendaService } from '../asigna-producto-tienda/asigna-producto-tienda.service';
 import { DetalleProductoService } from '../detalle-producto/detalle-producto.service';
@@ -83,6 +84,10 @@ export class RegistrarVentaComponent extends BaseComponent implements OnInit {
         });
       });
     });
+  }
+
+  limpiarTienda(){
+    this.selectedTienda = new Tienda();
   }
 
 }
