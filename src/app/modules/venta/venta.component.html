@@ -7,6 +7,23 @@
                 <mat-icon>add_circle</mat-icon>Agregar
             </button>
         </mat-toolbar>
+        <div name="filtros" class="row mt-4">
+            <div class="col-md-6 mb-3">
+                <mat-form-field style="width: 250px;">
+                    <mat-label>Seleccione un rango de fechas</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate placeholder="Dia inicio" [(ngModel)]="da1" (ngModelChange)="modelChangeFn($event)">
+                        <input matEndDate placeholder="Dia fin" [(ngModel)]="da2" (ngModelChange)="modelChangeFn2($event)">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+            <div class="col-md-6 mb-3">
+                <button mat-raised-button color="primary" (click)="filtrar()">Aplicar Filtros</button> &nbsp;&nbsp;&nbsp;
+                <button mat-raised-button color="accent" (click)="limpiarFiltros()">Limpiar Filtros</button>
+            </div>
+        </div>
         <mat-card class="example-card mt-4" *ngFor="let venta of ventas">
             <mat-card-header>
               <mat-card-title>{{venta.id_venta}}</mat-card-title>
@@ -68,6 +85,18 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Ingrese direccion de envio" class="form-control" name="direccion" #dniUsuario="direccion" [(ngModel)]="venta.direccion">
+                </div>
+            </div>
+            <div class="row">
+                <h2>Datos de la persona que recibirá el envio</h2>
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Ingrese Nombre" class="form-control" name="nombre" #nombre="ngModel" [(ngModel)]="venta.nombre_persona_recibe">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Ingrese Apellido" class="form-control" name="apellido" #apellido="ngModel" [(ngModel)]="venta.apellido_persona_recibe">
                 </div>
             </div>
             <!--<app-detalle-venta [esExterno]="true" [idExterno]="venta.id_venta" (newItemEvent)="addItem($event)"></app-detalle-venta>-->

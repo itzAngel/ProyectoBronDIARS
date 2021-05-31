@@ -7,6 +7,21 @@
                 <mat-icon>add_circle</mat-icon>Agregar
             </button>
         </mat-toolbar>
+        <div name="filtros" class="row mt-4">
+            <div class="col-md-6 mb-3">
+                <mat-form-field style="width: 250px;">
+                    <mat-select placeholder="Seleccione Producto" [(ngModel)]="detalleProdFiltro">
+                        <mat-option *ngFor="let obj of detalles" [value]="obj">
+                            {{obj.producto.modelo}} {{obj.color}} {{obj.talla}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-6 mb-3">
+                <button mat-raised-button color="primary" (click)="filtrar()">Aplicar Filtros</button> &nbsp;&nbsp;&nbsp;
+                <button mat-raised-button color="accent" (click)="limpiarFiltros()">Limpiar Filtros</button>
+            </div>
+        </div>
         <table class="table caption-top ">
             <caption>Lista de Asigna Producto Tienda</caption>
             <thead class="table-dark">

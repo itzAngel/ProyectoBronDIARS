@@ -19,4 +19,7 @@ export class AsignaProductoTiendaService extends BaseService{
   obtenerlistaporid(id:number){
     return this.http.get<AsignaProductoTienda[]>(this.Url + "/obtenerlistaporid/" + id);
   }
+  obtenerlistaporidDetalleProducto(id:number){
+    return this.http.get<AsignaProductoTienda[]>(this.Url + "/obtenerlistaporidDetalleProducto/" + id);
+  }
 }

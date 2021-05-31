@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from 'src/app/base/base.component';
 import { AsignaProductoTienda } from 'src/app/models/asigna-producto-tienda';
 import { DetalleProducto } from 'src/app/models/detalle-producto';
+import { Producto } from 'src/app/models/producto';
 import { Tienda } from 'src/app/models/tienda';
 import { DetalleProductoService } from '../detalle-producto/detalle-producto.service';
 import { TiendaService } from '../tienda/tienda.service';
@@ -22,6 +23,8 @@ export class AsignaProductoTiendaComponent extends BaseComponent implements OnIn
   editar: boolean = false;
   detalles: DetalleProducto[] = [];
   tiendas: Tienda[] = [];
+  asignasBus: AsignaProductoTienda[] = [];
+  detalleProdFiltro: DetalleProducto = null;
   constructor(public dialog: MatDialog, public _snackBar: MatSnackBar,
     public router:Router, public route: ActivatedRoute,public service: AsignaProductoTiendaService,
      public detalleservice: DetalleProductoService,public tiendaservice: TiendaService) { 
@@ -61,8 +64,28 @@ export class AsignaProductoTiendaComponent extends BaseComponent implements OnIn
     this.editar = false;
   }
 
-  guardarCombos(){
-    
+  filtrar(){
+    if(this.detalleProdFiltro == null){
+      this.openSnackBar("Seleccione el producto para filtrar los almacenes");
+    }else{
+      this.service.getList().subscribe(data => {
+        this.asignas = data;
+        if(this.detalleProdFiltro != null){
+          this.asignasBus=[];
+          for (let obj of this.asignas) {
+              if (obj.detalleProducto.id_detalle_producto == this.detalleProdFiltro.id_detalle_producto) {
+                this.asignasBus.push(obj);
+              };
+          };
+          this.asignas=this.asignasBus;
+        }
+      });
+    }
+  }
+
+  limpiarFiltros(){
+    this.detalleProdFiltro=null;
+    this.listar();
   }
   Guardar(asigna: AsignaProductoTienda) {
     if (this.validar()) {

@@ -21,6 +21,10 @@ export class VentaComponent extends BaseComponent implements OnInit {
   detalles: DetalleVenta[] = [];
   clientes: Cliente[] = [];
   editar: boolean = false;
+
+  ventasBus: Venta[] = [];
+  da1: Date=null;
+  da2: Date=null;
   constructor(public dialog: MatDialog, public _snackBar: MatSnackBar,
     public router:Router, public route: ActivatedRoute,public service: VentaService,
     public clienteService: ClienteService,public detservice: DetalleVentaService) { 
@@ -54,7 +58,29 @@ export class VentaComponent extends BaseComponent implements OnInit {
   limpiar() {
     this.venta = new Venta();
   }
+  filtrar(){
+    if (this.da1 === null || this.da2 === null){
+      this.openSnackBar("Seleccione el producto para filtrar los almacenes");
+    }else{
+      this.ventasBus=[];
+      for (let obj of this.ventas) {
+        var res = new Date(this.da1).getTime() < new Date(obj.fecha_venta).getTime();
+        var res2 = new Date(this.da2).getTime() > new Date(obj.fecha_venta).getTime();
+        if (res) {
+          if(res2){
+            this.ventasBus.push(obj);
+          }
+        };
+      };
+      this.ventas=this.ventasBus;
+    }
+  }
 
+  limpiarFiltros(){
+    this.da1=null;
+    this.da2=null;
+    this.listar();
+  }
   validar() {
     if (this.venta.cliente.id_cliente != null) {
       return true;
@@ -139,6 +165,14 @@ export class VentaComponent extends BaseComponent implements OnInit {
         this.openSnackBar("No se pudo eliminar el detalleVenta, probablemente esté siendo usada en otro modulo");
       }
     );
+  }
+
+  modelChangeFn(e) {
+    this.da1 = e;
+  }
+
+  modelChangeFn2(e) {
+      this.da2 = e;
   }
 
 }

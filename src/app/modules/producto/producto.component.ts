@@ -195,6 +195,7 @@ export class ProductoComponent extends BaseComponent implements OnInit {
   cerrarSesion(){
     localStorage.removeItem('isLogged');
     localStorage.removeItem('isLoggedCliente');
+    localStorage.removeItem('clienteSesion');
     localStorage.removeItem('listaCarrito');
     location.reload();
   }
