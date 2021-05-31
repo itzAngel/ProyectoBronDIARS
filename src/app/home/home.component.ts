@@ -47,6 +47,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
     localStorage.removeItem('isLoggedCliente');
     localStorage.removeItem('listaCarrito');
     localStorage.removeItem('clienteSesion');
+    localStorage.removeItem('usuarioSesion');
     location.reload();
   }
   

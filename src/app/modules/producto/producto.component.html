@@ -6,8 +6,10 @@
             <span>Lista de Productos</span>
             <span class="example-spacer"></span>
             <div *ngIf="!vistaCliente && loggeadoClient" >
-                <button mat-button [matMenuTriggerFor]="menuLogin" ><span *ngIf="clienteSesion != null">{{clienteSesion.nombre}}</span>
+                <button mat-button [matMenuTriggerFor]="menuLogin" >
                     <mat-icon>person</mat-icon>
+                    <span *ngIf="clienteSesion != null && loggeadoClient">{{clienteSesion.nombre}}</span>
+                    <span *ngIf="usuarioSesion != null && loggeado">{{usuarioSesion.nombre}}</span>
                   </button>
                   <mat-menu #menuLogin="matMenu">
                     <button mat-menu-item *ngIf="loggeadoClient" (click)="cerrarSesion()">
@@ -37,7 +39,7 @@
                                     <mat-divider></mat-divider>
                                 </mat-list-item>
                             </mat-list>
-                            <button mat-button color="warn" *ngIf="loggeadoClient" routerLink="../registrarVenta">Continuar mi compra</button>
+                            <button type="button" class="btn btn-success" *ngIf="loggeadoClient" routerLink="../registrarVenta">Continuar mi compra</button>
                         </mat-tab>
                         <mat-tab>
                             <ng-template mat-tab-label>
@@ -82,7 +84,7 @@
                                         <h3>Precio: S/.{{producto.precio}}</h3>
                                     </mat-card-content>
                                     <mat-card-actions>
-                                        <button mat-button color="accent" *ngIf="!vistaCliente && loggeadoClient" (click)="comprar(producto)">
+                                        <button type="button" class="btn btn-info" *ngIf="!vistaCliente && loggeadoClient" (click)="comprar(producto)">
                                             <mat-icon>shopping_cart</mat-icon>Agregar al carrito</button>
                                         <button type="button" class="btn btn-primary" *ngIf="vistaCliente" [routerLink]="['../producto', producto.id_producto]">Comprar</button>
                                     </mat-card-actions>
@@ -147,7 +149,6 @@
                             <img src="{{producto.foto}}" style="width: 200px; height: 200px;">
                         </mat-card-content>
                         <mat-card-actions>
-                            <button type="button" class="btn btn-primary" *ngIf="!loggeadoClient" routerLink="../login">Comprar</button>
                             <button type="button" class="btn btn-primary" *ngIf="loggeadoClient" (click)="comprar(producto)">Comprar</button>
                             <br><br>
                             <div *ngIf="loggeado">

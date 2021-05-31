@@ -43,7 +43,9 @@ export class LoginComponent extends BaseComponent implements OnInit {
           this.openSnackBar("Bienvenido " + this.usuario.nombre);
           this.router.navigate(['dashboard']);
           this.userservice.isLogged = true;
+          this.userservice.usuarioSesion = this.usuario;
           localStorage.setItem('isLogged', JSON.stringify(this.userservice.isLogged));
+          localStorage.setItem('usuarioSesion', JSON.stringify(this.userservice.usuarioSesion));
         }else{
           this.openSnackBar("Usuario o contraseña incorrectos");
           this.userservice.isLogged = false;

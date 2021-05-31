@@ -13,9 +13,10 @@
         </div>
         <span class="example-spacer"></span>
         <div>
-            
             <button mat-button [matMenuTriggerFor]="menuLogin" >
-                <mat-icon>person</mat-icon><span *ngIf="clienteSesion != null">{{clienteSesion.nombre}}</span>
+                <mat-icon>person</mat-icon>
+                <span *ngIf="clienteSesion != null && loggeadoClient">{{clienteSesion.nombre}}</span>
+                <span *ngIf="usuarioSesion != null && loggeado">{{usuarioSesion.nombre}}</span>
               </button>
               <mat-menu #menuLogin="matMenu">
                 <button mat-button *ngIf="!loggeado && !loggeadoClient"routerLink="../login">Login</button>

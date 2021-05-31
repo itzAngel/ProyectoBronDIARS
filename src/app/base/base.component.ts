@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Cliente } from '../models/cliente';
+import { Usuario } from '../models/usuario';
 @Component({
   selector: 'app-base',
   templateUrl: './base.component.html',
@@ -13,6 +14,7 @@ export class BaseComponent implements OnInit {
   loggeado:boolean = false;
   loggeadoClient:boolean = false;
   clienteSesion: Cliente = new Cliente();
+  usuarioSesion: Usuario = new Usuario();
   constructor(public dialog: MatDialog, public _snackBar: MatSnackBar,
     public router:Router, public route: ActivatedRoute) { }
 
@@ -31,5 +33,6 @@ export class BaseComponent implements OnInit {
     this.loggeado = JSON.parse(localStorage.getItem('isLogged'));
     this.loggeadoClient = JSON.parse(localStorage.getItem('isLoggedCliente'));
     this.clienteSesion = JSON.parse(localStorage.getItem('clienteSesion'));
+    this.usuarioSesion = JSON.parse(localStorage.getItem('usuarioSesion'));
   }
 }
