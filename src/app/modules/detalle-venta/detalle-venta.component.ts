@@ -95,12 +95,14 @@ export class DetalleVentaComponent extends BaseComponent implements OnInit {
           }
         });
         if(exec){
-          if(detalleVentaParaCarrito.cantidad <= this.asignaSelectedCarrito.cantidad){
+          if(detalleVentaParaCarrito.cantidad <= this.asignaSelectedCarrito.cantidad && detalleVentaParaCarrito.cantidad != null){
             detalleVentaParaCarrito.precio=this.asignaSelectedCarrito.detalleProducto.producto.precio;
             this.asignaProductoTiendaservice.getObjById(this.asignaSelectedCarrito.id_asigna_producto_tienda).subscribe(data=>{
               detalleVentaParaCarrito.asignaProductoTienda = data;
             })
             this.service.listaDetallesCarrito.push(detalleVentaParaCarrito);
+          }else if(detalleVentaParaCarrito.cantidad == null){
+            this.openSnackBar("La cantidad no puede ser 0");
           }else{
             this.openSnackBar("La cantidad excede al stock para este producto");
           }
@@ -140,7 +142,6 @@ export class DetalleVentaComponent extends BaseComponent implements OnInit {
             detalleVenta.asignaProductoTienda = data;
               this.ventasservice.getObjById(detalleVenta.venta.id_venta).subscribe(data => {
                   detalleVenta.venta = data;
-                  console.log(detalleVenta)
                   this.service.createObj(detalleVenta).subscribe(data => {
                       this.listar();
                       this.openSnackBar("detalleVenta se agrego con exito");

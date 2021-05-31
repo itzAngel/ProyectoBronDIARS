@@ -70,7 +70,7 @@
               </mat-step>
             </mat-vertical-stepper>
       <div>
-        <button type="button" class="btn btn-success" *ngIf="validarDetallesVentaCarrito()" matStepperNext>Siguiente</button>
+        <button type="button" class="btn btn-success" *ngIf="validarDetallesVentaCarrito()" (click)="cargarDatosVenta()" matStepperNext>Siguiente</button>
         <button type="button" class="btn btn-danger" *ngIf="!validarDetallesVentaCarrito()" (click)="openSnackBar('Rellene los detalles de Venta')">Siguiente</button>
       </div>
     </form>
@@ -80,35 +80,141 @@
       <ng-template matStepLabel>Despacho</ng-template>
 
       <div *ngIf="validarDetallesVentaCarrito()">
-          AAA
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <mat-form-field style="width: 250px;">
+                    <mat-select placeholder="cliente" name="cliente" #cliente="ngModel" [(ngModel)]="venta.cliente.id_cliente" [disabled]="true">
+                        <mat-option *ngFor="let obj of clientes" [value]="obj.id_cliente">
+                            {{obj.nombre}} {{obj.apellido}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-6 mb-3">
+                <input type="text" placeholder="Ingrese direccion de envio" class="form-control" name="direccion" #direccion="ngModel" [(ngModel)]="venta.direccion">
+            </div>
+        </div>
+        <div class="row">
+            <h2>Datos de la persona que recibirá el envio</h2>
+            <div class="col-md-6 mb-3">
+                <input type="text" placeholder="Ingrese Nombre" class="form-control" name="nombre" #nombre="ngModel" [(ngModel)]="venta.nombre_persona_recibe">
+            </div>
+            <div class="col-md-6 mb-3">
+                <input type="text" placeholder="Ingrese Apellido" class="form-control" name="apellido" #apellido="ngModel" [(ngModel)]="venta.apellido_persona_recibe">
+            </div>
+        </div>
       </div>
-
+      <div *ngIf="!validarDetallesVentaCarrito()">
+        <h1>Complete el paso anterior</h1>
+      </div>
       <div class="mt-2">
-        <button mat-button matStepperPrevious>Atras</button>
-        <button mat-button matStepperNext>Siguiente</button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step label="Metodo de pago">
-    <form>
-      <mat-form-field>
-        <mat-label>Tarjeta</mat-label>
-        <input matInput placeholder="Ex. 1 Main St, New York, NY"
-               required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperPrevious>Atras</button>
-        <button mat-button matStepperNext>Siguiente</button>
+        <button type="button" class="btn btn-info" matStepperPrevious>Atras</button>
+        &nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-danger" *ngIf="!validarDatosVenta()" (click)="openSnackBar('Complete los datos del despacho')">Siguiente</button>
+        <button type="button" class="btn btn-success" *ngIf="validarDatosVenta()"matStepperNext>Siguiente</button>
       </div>
     </form>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Confirmación</ng-template>
-    <p>Estas por confirmar tu compra</p>
-    <div>
-      <button mat-button matStepperPrevious>Atras</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
-    </div>
+    <form>
+      <ng-template matStepLabel>Metodo de pago</ng-template>
+      <div *ngIf="validarDatosVenta()">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <h2>Escoja un metodo de pago</h2>
+              <mat-radio-group name="metodo" #metodo="ngModel" [(ngModel)]="venta.metodo_pago">
+                  <mat-radio-button value="Pago con tarjeta" disabled>Pago con tarjeta</mat-radio-button>
+                  &nbsp;&nbsp;&nbsp;
+                  <mat-radio-button value="Pago con Yape" disabled>Pago con Yape</mat-radio-button>
+                  &nbsp;&nbsp;&nbsp;
+                  <mat-radio-button value="Pago contra entrega en efectivo">Pago contra entrega en efectivo</mat-radio-button>
+              </mat-radio-group>
+          </div>
+        </div>
+        <div class="row">
+          <h2>Seleccione comprobante de pago</h2>
+            <div class="col-md-12 mb-3">
+                <mat-radio-group name="comprobante" #comprobante="ngModel" [(ngModel)]="venta.comprobante_pago">
+                  <mat-radio-button value="Boleta">Boleta</mat-radio-button>
+                  &nbsp;&nbsp;&nbsp;
+                  <mat-radio-button value="Factura" disabled>Factura</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+      </div>
+      <div *ngIf="validarDatosVenta()">
+        <h1>Complete el paso anterior</h1>
+      </div>
+      <div class="mt-2">
+        <button type="button" class="btn btn-info" matStepperPrevious>Atras</button>
+        &nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-danger" *ngIf="!validarDatosPago()" (click)="openSnackBar('Complete los datos del pago')">Siguiente</button>
+        <button type="button" class="btn btn-success" *ngIf="validarDatosPago()" (click)="cargarFotosProductos()" matStepperNext>Siguiente</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+      <ng-template matStepLabel>Confirmación</ng-template>
+      <div *ngIf="validarDatosPago()">
+          <mat-card class="example-card">
+            <mat-card-header>
+                <mat-card-title>¡{{clienteSesion.nombre}}, tu compra esta por finalizar!</mat-card-title>
+                <mat-card-subtitle>Revisa todos los datos y confirma tu compra</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <h2>Resumen de productos de Bron Shop</h2>
+              <h3>Datos del cliente</h3>
+              <strong>DNI:</strong> {{venta.cliente.dni_cliente}}
+              <br>
+              <strong>Cliente:</strong> {{venta.cliente.nombre}} {{venta.cliente.apellido}}
+              <br>
+              <strong>Telefono:</strong> {{venta.cliente.telefono}}
+              <br><br>
+              <mat-divider></mat-divider>
+              <br>
+              <h3>Datos de su compra</h3>
+              <strong>Tienda que entregará los producto:</strong> {{selectedTienda.nombre_tienda}} - Distrito: {{selectedTienda.distrito}}
+              <br>
+              <strong>Fecha:</strong> {{venta.fecha_venta | date}}
+              <br>
+              <strong>Fecha de entrega:</strong> {{venta.fecha_entrega | date}}
+              <br>
+              <strong>Total a pagar:</strong> {{venta.precio_total}}
+              <br><br>
+              <mat-divider></mat-divider>
+              <br>
+              <div class="row" *ngFor="let prod of detalleVentaService.listaDetallesCarrito">
+                <h3>{{prod.asignaProductoTienda.detalleProducto.producto.categoria.categoria}} {{prod.asignaProductoTienda.detalleProducto.producto.modelo}} 
+                  {{prod.asignaProductoTienda.detalleProducto.color}} {{prod.asignaProductoTienda.detalleProducto.talla}}</h3>
+                  <div class="col-md-6 mb-3">
+                    <img src="{{prod.asignaProductoTienda.detalleProducto.producto.foto}}" style="width: 200px; height: 200px;">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <strong>Precio:</strong> S/.{{prod.asignaProductoTienda.detalleProducto.producto.precio}}
+                    <br>
+                    <strong>Cantidad:</strong> {{prod.cantidad}}
+                  </div>
+              </div>
+              <br><br>
+              <mat-divider></mat-divider>
+              <br>
+              <h3>Resumen</h3>
+              <strong>Total a pagar:</strong> S/.{{venta.precio_total}}
+              <br>
+              <strong>Metodo de pago:</strong> {{venta.metodo_pago}}
+              <br>
+              <strong>Comprobante de pago:</strong> {{venta.comprobante_pago}}
+            </mat-card-content>
+          </mat-card>
+          <div class="mt-2">
+              <button type="button" class="btn btn-info" matStepperPrevious>Atras</button>
+              &nbsp;&nbsp;&nbsp;
+              <button type="button" class="btn btn-success" (click)="confirmarCompra()" routerLink="../home">Confirmar Compra</button>
+          </div>
+      </div>
+      <div *ngIf="!validarDatosPago()">
+          <h1>Complete el paso anterior</h1>
+      </div>
   </mat-step>
 </mat-horizontal-stepper>
 

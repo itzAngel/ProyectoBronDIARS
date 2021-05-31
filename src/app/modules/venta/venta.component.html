@@ -41,7 +41,6 @@
                             <th scope="col">Tienda</th>
                             <th scope="col">Cantidad</th>
                             <th scope="col">Precio</th>
-                            <th scope="col">Opciones</th>
                         </tr>
                     </thead>
                     <tbody *ngFor="let detalleVenta of venta.listaDetalleVenta">
@@ -51,9 +50,6 @@
                             <td>{{detalleVenta.asignaProductoTienda.tienda.nombre_tienda}}</td>
                             <td>{{detalleVenta.cantidad}}</td>
                             <td>{{detalleVenta.precio}}</td>
-                            <td>
-                                <button type="button" class="btn btn-danger" (click)="EliminarDetalle(detalleVenta)">Eliminar</button>
-                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -87,7 +83,7 @@
                     </mat-form-field>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <input type="text" placeholder="Ingrese direccion de envio" class="form-control" name="direccion" #dniUsuario="direccion" [(ngModel)]="venta.direccion">
+                    <input type="text" placeholder="Ingrese direccion de envio" class="form-control" name="direccion" #direccion="ngModel" [(ngModel)]="venta.direccion">
                 </div>
             </div>
             <div class="row">
@@ -99,7 +95,26 @@
                     <input type="text" placeholder="Ingrese Apellido" class="form-control" name="apellido" #apellido="ngModel" [(ngModel)]="venta.apellido_persona_recibe">
                 </div>
             </div>
-            <!--<app-detalle-venta [esExterno]="true" [idExterno]="venta.id_venta" (newItemEvent)="addItem($event)"></app-detalle-venta>-->
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <mat-radio-group aria-label="Escoja un metodo de pago" name="metodo" #metodo="ngModel" [(ngModel)]="venta.metodo_pago">
+                        <mat-radio-button value="Pago con tarjeta" disabled>Pago con tarjeta</mat-radio-button>
+                        &nbsp;&nbsp;&nbsp;
+                        <mat-radio-button value="Pago con Yape" disabled>Pago con Yape</mat-radio-button>
+                        &nbsp;&nbsp;&nbsp;
+                        <mat-radio-button value="Pago contra entrega en efectivo">Pago contra entrega en efectivo</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12 mb-3">
+                      <mat-radio-group aria-label="Seleccione comprobante de pago" name="comprobante" #comprobante="ngModel" [(ngModel)]="venta.comprobante_pago">
+                        <mat-radio-button value="Boleta">Boleta</mat-radio-button>
+                        &nbsp;&nbsp;&nbsp;
+                        <mat-radio-button value="Factura">Factura</mat-radio-button>
+                      </mat-radio-group>
+                  </div>
+              </div>
             <br><br>
             <div class="row">
                 <div class="col-6 text-center" *ngIf="!editar">

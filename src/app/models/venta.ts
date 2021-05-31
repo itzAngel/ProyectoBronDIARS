@@ -10,5 +10,7 @@ export class Venta {
     nombre_persona_recibe: string = null;
 	apellido_persona_recibe: string = null;
     fecha_entrega: Date = null;
+    metodo_pago: string = null;
+	comprobante_pago: string = null;
     listaDetalleVenta: DetalleVenta[] = [];
 }

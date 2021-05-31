@@ -48,8 +48,10 @@
                 </div>
                 <br>
                 <div class="row">
+                    <label>Ingrese cantidad</label>
                     <div class="col-md-6 mb-3">
-                        <input type="number" placeholder="Ingrese cantidad" class="form-control" name="cantidad" #cantidad="ngModel" [(ngModel)]="detalleVentaParaCarrito.cantidad">
+                        <mat-slider thumbLabel [displayWith]="formatLabel"tickInterval="1" min="0" max="10"  
+                        name="cantidad" #cantidad="ngModel" [(ngModel)]="detalleVentaParaCarrito.cantidad"></mat-slider>
                     </div>
                 </div>
                 <div class="row" *ngIf="!esExterno">

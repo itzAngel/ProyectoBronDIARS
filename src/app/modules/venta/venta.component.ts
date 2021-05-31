@@ -82,7 +82,9 @@ export class VentaComponent extends BaseComponent implements OnInit {
     this.listar();
   }
   validar() {
-    if (this.venta.cliente.id_cliente != null) {
+    if (this.venta.cliente.id_cliente != null && this.venta.direccion!=null && 
+      this.venta.nombre_persona_recibe!=null && this.venta.apellido_persona_recibe!=null && 
+      this.venta.metodo_pago!=null && this.venta.comprobante_pago!=null) {
       return true;
     } else {
       return false;
