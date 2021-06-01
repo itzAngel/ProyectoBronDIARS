@@ -8,6 +8,7 @@ import { ProductoModule } from '../producto/producto.module';
 import { DetalleProductoModule } from '../detalle-producto/detalle-producto.module';
 import { VentaModule } from '../venta/venta.module';
 import { DetalleVentaModule } from '../detalle-venta/detalle-venta.module';
+import { PdfMakerModule } from 'src/app/shared/pdfmaker.module';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { DetalleVentaModule } from '../detalle-venta/detalle-venta.module';
     ProductoModule,
     DetalleProductoModule,
     VentaModule,
-    DetalleVentaModule
+    DetalleVentaModule,
+    PdfMakerModule
   ]
 })
 export class RegistrarVentaModule { }

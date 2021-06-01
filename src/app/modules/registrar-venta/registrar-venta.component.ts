@@ -18,7 +18,10 @@ import { ImagenService } from '../imagen/imagen.service';
 import { ProductoService } from '../producto/producto.service';
 import { TiendaService } from '../tienda/tienda.service';
 import { VentaService } from '../venta/venta.service';
-
+import { Img, PdfMakeWrapper, Table, Txt } from 'pdfmake-wrapper';
+import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 @Component({
   selector: 'app-registrar-venta',
   templateUrl: './registrar-venta.component.html',
@@ -44,6 +47,7 @@ export class RegistrarVentaComponent extends BaseComponent implements OnInit {
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);
+        (window as any).pdfMake.vfs = pdfFonts.pdfMake.vfs;
   }
 
   ngOnDestroy(): void {
@@ -150,6 +154,7 @@ export class RegistrarVentaComponent extends BaseComponent implements OnInit {
               });
           });
           this.openSnackBar("Compra se completó con exito");
+          this.generarPDF();
           this.selectedTienda = new Tienda();
           this.listaAsignaFinal = [];
           this.venta = new Venta();
@@ -165,5 +170,73 @@ export class RegistrarVentaComponent extends BaseComponent implements OnInit {
     }
   }
 
+  async generarPDF(){
+    const pdf = new PdfMakeWrapper();
+    pdf.pageSize('A4');
+    pdf.info({
+        title: 'Boleta de venta',
+        author: 'BronShop',
+        subject: 'Boleta',
+    });
+    pdf.add(
+      new Txt("¡" + this.clienteSesion.nombre + " ya recibimos tu pedido, gracias por comprar en Bron Shop!").bold().alignment('center').fontSize(20).end
+    );
+    pdf.add(
+      new Txt("Datos del cliente").alignment('left').bold().fontSize(14).end
+    );
+    pdf.add(
+      new Txt("DNI: " + this.venta.cliente.dni_cliente).alignment('left').fontSize(12).end
+    );
+    pdf.add(
+      new Txt("Cliente:" + this.venta.cliente.nombre + " " + this.venta.cliente.apellido).alignment('left').fontSize(12).end
+    );
+    pdf.add(
+      new Txt("Telefono:" + this.venta.cliente.telefono).alignment('left').fontSize(12).end
+    );
+    pdf.add(
+      new Txt("Datos su compra").alignment('left').bold().fontSize(14).end
+    );
+    pdf.add(
+      new Txt("Tienda que entregará los producto: " + this.selectedTienda.nombre_tienda + "-" + "Distrito: " + this.selectedTienda.distrito).alignment('left').fontSize(12).end
+    );
+    pdf.add(
+      new Txt("Fecha: " + this.venta.fecha_venta.toDateString()).alignment('left').fontSize(12).end
+    );
+    pdf.add(
+      new Txt("Fecha de entrega: " + this.venta.fecha_entrega.toDateString()).alignment('left').fontSize(12).end
+    );
+    pdf.add(
+      new Txt("Total a pagar: " + this.venta.precio_total).alignment('left').fontSize(12).end
+    );
+    pdf.add(
+      new Txt("Resumen de productos de Bron Shop").alignment('left').bold().fontSize(14).end
+    );
+    this.detalleVentaService.listaDetallesCarrito.forEach(prod => {
+      pdf.add(
+        new Table([
+          [ new Txt(prod.asignaProductoTienda.detalleProducto.producto.categoria.categoria + " " + 
+          prod.asignaProductoTienda.detalleProducto.producto.modelo + " " + 
+          prod.asignaProductoTienda.detalleProducto.color + " " + 
+          prod.asignaProductoTienda.detalleProducto.talla).alignment('left').fontSize(12).end, 
+          new Txt("Precio: S/. " + prod.asignaProductoTienda.detalleProducto.producto.precio).alignment('left').fontSize(12).end,
+          new Txt("Cantidad " + prod.cantidad).alignment('left').fontSize(12).end
+        ],
+        ]).layout('lightHorizontalLines').layout('headerLineOnly').end
+      );
+    });
+    pdf.add(
+      new Txt("Resumen").alignment('left').bold().fontSize(14).end
+    );
+    pdf.add(
+      new Txt("Total a pagar: S/. " + this.venta.precio_total).alignment('left').fontSize(12).end
+    );
+    pdf.add(
+      new Txt("Metodo de pago: " + this.venta.metodo_pago).alignment('left').fontSize(12).end
+    );
+    pdf.add(
+      new Txt("Comprobante de pago: " + this.venta.comprobante_pago).alignment('left').fontSize(12).end
+    );
+    pdf.create().download();
+  }
 
 }
