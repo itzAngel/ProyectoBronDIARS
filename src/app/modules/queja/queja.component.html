@@ -1,0 +1,81 @@
+<div class="container" *ngIf="esListar">
+    <div class="row mt-4">
+        <mat-toolbar>
+            <button mat-button class="example-app-name" routerLink="../home" style="cursor: pointer;">
+                <mat-icon>home</mat-icon>
+            </button>
+            <span>Lista de Quejas</span>
+            <span style="flex: 1 1 auto;"></span>
+            <button mat-button class="example-icon" (click)="agregar()">
+                <mat-icon>add_circle</mat-icon>Agregar
+            </button>
+        </mat-toolbar>
+        <table class="table caption-top ">
+            <caption>Lista de Quejas</caption>
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Código Queja</th>
+                    <th scope="col">Queja</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">ID Venta</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col" *ngIf="loggeado">Opciones</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let que of quejas">
+                <tr>
+                    <th scope="row">{{que.id_queja}} </th>
+                    <td>{{que.queja}}</td>
+                    <td>{{que.fecha | date}}</td>
+                    <td>{{que.venta.id_venta}}</td>
+                    <td>{{que.venta.cliente.nombre}} {{que.venta.cliente.apellido}}</td>
+                    <td *ngIf="loggeado">
+                        <button type="button" class="btn btn-primary" (click)="Editar(que)">Editar</button> &nbsp;
+                        <button type="button" class="btn btn-danger" (click)="Eliminar(que)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container" *ngIf="!esListar">
+    <div class="card mt-4">
+        <div class="card-header">
+            <span *ngIf="!editar">Agregar Queja</span>
+            <span *ngIf="editar">Editar Queja</span>
+        </div>
+        <div class="card-body">
+            <div class="row" style="justify-content: center;">
+                <div class="col-md-12 mb-3">
+                    <mat-form-field style="width: 250px;">
+                        <mat-select placeholder="Venta" name="veta" #veta="ngModel" [(ngModel)]="queja.venta.id_venta">
+                            <mat-option *ngFor="let obj of ventas" [value]="obj.id_venta">
+                                id: {{obj.id_venta}}, cliente: {{obj.cliente.nombre}} fecha: {{obj.fecha_venta | date}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row" style="justify-content: center;">
+                <div class="col-md-12 mb-3">
+                    <textarea type="text" maxlength="150" placeholder="Ingrese queja" class="form-control" name="que" #que="ngModel" [(ngModel)]="queja.queja"></textarea>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-4 text-center" *ngIf="!editar">
+                    <button type="button" class="btn btn-danger" (click)="Guardar(queja)">Guardar Queja</button>
+                </div>
+                <div class="col-4 text-center" *ngIf="editar">
+                    <button type="button" class="btn btn-danger" (click)="Actualizar()">Editar Queja</button>
+                </div>
+                <div class="col-4 text-center">
+                    <button type="button" class="btn btn-primary" (click)="limpiar()">Limpiar Formulario</button>
+                </div>
+                <div class="col-4 text-center">
+                    <button type="button" class="btn btn-info" (click)="esListar = true">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

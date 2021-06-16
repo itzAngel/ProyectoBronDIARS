@@ -1,0 +1,70 @@
+<div class="container">
+    <div class="row mt-4">
+        <mat-toolbar>
+            <span>Lista de Contactos</span>
+            <span style="flex: 1 1 auto;"></span>
+            <button mat-button class="example-icon" (click)="agregar()">
+                <mat-icon>add_circle</mat-icon>Agregar
+            </button>
+        </mat-toolbar>
+        <table class="table caption-top ">
+            <caption>Lista de Contactos</caption>
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Código Contacto</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Mensaje</th>
+                    <th scope="col">Opciones</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let con of contactos">
+                <tr>
+                    <th scope="row">{{con.id_contacto}} </th>
+                    <td>{{con.nombre}}</td>
+                    <td>{{con.correo}}</td>
+                    <td>{{con.mensaje}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="Editar(con)">Editar</button> &nbsp;
+                        <button type="button" class="btn btn-danger" (click)="Eliminar(con)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container">
+    <div class="card mt-4">
+        <div class="card-header">
+            <span *ngIf="!editar">Agregar Contacto</span>
+            <span *ngIf="editar">Editar Contacto</span>
+        </div>
+        <div class="card-body">
+            <div class="row" style="justify-content: center;">
+                <div class="col-md-6 mb-3">
+                    <input type="text" placeholder="Ingrese Nombre de Contacto" class="form-control" name="nombre" #nombre="ngModel" [(ngModel)]="contacto.nombre">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <input type="email" placeholder="Ingrese Correo de Contacto" class="form-control" name="correo" #correo="ngModel" [(ngModel)]="contacto.correo">
+                </div>
+            </div>
+            <div class="row" style="justify-content: center;">
+                <div class="col-md-12 mb-3">
+                    <textarea type="text" maxlength="150" placeholder="Ingrese mensaje" class="form-control" name="mensaje" #mensaje="ngModel" [(ngModel)]="contacto.mensaje"></textarea>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-6 text-center" *ngIf="!editar">
+                    <button type="button" class="btn btn-danger" (click)="Guardar(contacto)">Guardar Contacto</button>
+                </div>
+                <div class="col-6 text-center" *ngIf="editar">
+                    <button type="button" class="btn btn-danger" (click)="Actualizar()">Editar Contacto</button>
+                </div>
+                <div class="col-6 text-center">
+                    <button type="button" class="btn btn-primary" (click)="limpiar()">Limpiar Formulario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

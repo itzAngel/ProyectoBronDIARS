@@ -36,7 +36,7 @@ export class ClienteComponent extends BaseComponent implements OnInit {
   validar() {
     if (this.cliente.dni_cliente != null && this.cliente.nombre != null &&  this.cliente.apellido != null && 
       this.cliente.telefono != null && this.cliente.provincia != null && this.cliente.distrito != null && 
-      this.cliente.direccion != null && this.cliente.contrasena) {
+      this.cliente.direccion != null && this.cliente.contrasena && this.cliente.correo) {
       return true;
     } else {
       return false;

@@ -23,12 +23,16 @@ const routes: Routes = [
             { path: 'tienda', loadChildren: () => import('./modules/tienda/tienda.module').then(m => m.TiendaModule) }, 
             { path: 'usuario', loadChildren: () => import('./modules/usuario/usuario.module').then(m => m.UsuarioModule) }, 
             { path: 'venta', loadChildren: () => import('./modules/venta/venta.module').then(m => m.VentaModule) },
+            { path: 'contacto', loadChildren: () => import('./modules/contacto/contacto.module').then(m => m.ContactoModule) },
+            { path: 'queja', loadChildren: () => import('./modules/queja/queja.module').then(m => m.QuejaModule) },
         ]
     },
     { path: 'producto', loadChildren: () => import('./modules/producto/producto.module').then(m => m.ProductoModule) }, 
     { path: 'producto/:productId', component: VistaProductoComponent },
     { path: 'login', component: LoginComponent },
     { path: 'registrarVenta', loadChildren: () => import('./modules/registrar-venta/registrar-venta.module').then(m => m.RegistrarVentaModule) },
+    { path: 'contacto', loadChildren: () => import('./modules/contacto/contacto.module').then(m => m.ContactoModule) },
+    { path: 'queja', loadChildren: () => import('./modules/queja/queja.module').then(m => m.QuejaModule) },
     //{ path: '**', redirectTo: 'not-found'}
   ];
 

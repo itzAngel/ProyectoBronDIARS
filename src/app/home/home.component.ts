@@ -5,11 +5,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '../base/base.component';
 import { Categoria } from '../models/categoria';
+import { Contacto } from '../models/contacto';
 import { Producto } from '../models/producto';
+import { Queja } from '../models/queja';
+import { Venta } from '../models/venta';
 import { CategoriaService } from '../modules/categoria/categoria.service';
+import { ContactoService } from '../modules/contacto/contacto.service';
 import { DetalleProductoService } from '../modules/detalle-producto/detalle-producto.service';
 import { ImagenService } from '../modules/imagen/imagen.service';
 import { ProductoService } from '../modules/producto/producto.service';
+import { VentaService } from '../modules/venta/venta.service';
 import { ClientAuthServiceService } from '../services/auth/client-auth-service.service';
 
 @Component({
@@ -18,7 +23,7 @@ import { ClientAuthServiceService } from '../services/auth/client-auth-service.s
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent extends BaseComponent implements OnInit {
-
+  contacto: Contacto = new Contacto();
   producto: Producto = new Producto();
   productos: Producto[] = [];
   listaCarrito: Producto[] = [];
@@ -31,7 +36,8 @@ export class HomeComponent extends BaseComponent implements OnInit {
   constructor(public dialog: MatDialog, public _snackBar: MatSnackBar,public categoriaservice: CategoriaService,
     public router:Router, public route: ActivatedRoute, public service: ProductoService,
      public detalleProductoService: DetalleProductoService,public imgservice: ImagenService,
-     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,public clientservice:ClientAuthServiceService) {
+     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,public clientservice:ClientAuthServiceService,
+     public ventaservice: VentaService, public contactoservice: ContactoService) {
     super(dialog,_snackBar,router,route);
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -128,5 +134,29 @@ export class HomeComponent extends BaseComponent implements OnInit {
     localStorage.removeItem('listaCarrito');
     localStorage.setItem('listaCarrito', JSON.stringify(this.service.listaCarrito));
     this.listaCarrito=[];
+  }
+
+  limpiarContacto() {
+    this.contacto = new Contacto();
+  }
+
+  validarContacto() {
+    if (this.contacto.nombre != null && this.contacto.correo != null && this.contacto.mensaje != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  GuardarContacto(contacto: Contacto) {
+    if (this.validarContacto()) {
+      this.contactoservice.createObj(contacto).subscribe(data => {
+          this.listar();
+          this.openSnackBar("contacto se agrego con exito");
+          this.limpiarContacto();
+      });
+    } else {
+      this.openSnackBar("Llena todos los campos de la contacto");
+    }
   }
 }

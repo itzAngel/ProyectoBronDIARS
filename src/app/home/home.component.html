@@ -20,6 +20,14 @@
               </button>
               <mat-menu #menuLogin="matMenu">
                 <button mat-button *ngIf="!loggeado && !loggeadoClient"routerLink="../login">Login</button>
+                <button mat-menu-item *ngIf="loggeadoClient" routerLink="../queja">
+                    <mat-icon>sentiment_dissatisfied</mat-icon>
+                    <span>Mis quejas</span>
+                </button>
+                <button mat-menu-item *ngIf="loggeado" routerLink="../dashboard">
+                    <mat-icon>dashboard</mat-icon>
+                    <span>Dashboard</span>
+                </button>
                 <button mat-menu-item *ngIf="loggeado" (click)="cerrarSesion()">
                   <mat-icon>dialpad</mat-icon>
                   <span>Cerrar Sesion</span>
@@ -98,6 +106,37 @@
                         <app-producto [vistaCliente]="true"></app-producto>
                     </div>
                 </main>
+                <div class="container">
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <span>Contactanos</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="row" style="justify-content: center;">
+                                <div class="col-md-6 mb-3">
+                                    <input type="text" placeholder="Ingrese Nombre de Contacto" class="form-control" name="nombre" #nombre="ngModel" [(ngModel)]="contacto.nombre">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="email" placeholder="Ingrese Correo de Contacto" class="form-control" name="correo" #correo="ngModel" [(ngModel)]="contacto.correo">
+                                </div>
+                            </div>
+                            <div class="row" style="justify-content: center;">
+                                <div class="col-md-12 mb-3">
+                                    <textarea type="text" maxlength="150" placeholder="Ingrese mensaje" class="form-control" name="mensaje" #mensaje="ngModel" [(ngModel)]="contacto.mensaje"></textarea>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-6 text-center">
+                                    <button type="button" class="btn btn-danger" (click)="GuardarContacto(contacto)">Guardar Contacto</button>
+                                </div>
+                                <div class="col-6 text-center">
+                                    <button type="button" class="btn btn-primary" (click)="limpiarContacto()">Limpiar Formulario</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid">
                     <div class="d-flex align-items-center justify-content-between small">

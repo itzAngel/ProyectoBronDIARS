@@ -26,6 +26,8 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     {link: 'tienda', viewValue: 'Modulo Tienda'},
     {link: 'usuario', viewValue: 'Modulo Usuario'},
     {link: 'venta', viewValue: 'Modulo Venta'},
+    {link: 'queja', viewValue: 'Modulo queja'},
+    {link: 'contacto', viewValue: 'Modulo contacto'},
   ];
   mobileQuery: MediaQueryList;
 

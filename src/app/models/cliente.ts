@@ -8,4 +8,5 @@ export class Cliente {
     distrito: string = null;
 	direccion: string = null;
     contrasena: string = null;
+    correo: string = null;
 }

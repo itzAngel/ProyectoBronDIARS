@@ -16,6 +16,7 @@
                     <th scope="col">Apellido</th>
                     <th scope="col">Telefeno</th>
                     <th scope="col">Direccion</th>
+                    <th scope="col">Correo</th>
                     <th scope="col">Opciones</th>
                 </tr>
             </thead>
@@ -26,6 +27,7 @@
                     <td>{{cliente.apellido}}</td>
                     <td>{{cliente.telefono}}</td>
                     <td>{{cliente.direccion}}</td>
+                    <td>{{cliente.correo}}</td>
                     <td>
                         <button type="button" class="btn btn-primary" (click)="Editar(cliente)">Editar</button> &nbsp;
                         <button type="button" class="btn btn-danger" (click)="Eliminar(cliente)">Eliminar</button>
@@ -72,6 +74,11 @@
                 </div>
                 <div class="col-md-6 mb-3">
                     <input type="password" placeholder="Editar contrasena" class="form-control" name="contrasena" #contrasena="ngModel" [(ngModel)]="cliente.contrasena">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <input type="text" placeholder="Editar correo" class="form-control" name="coro" #coro="ngModel" [(ngModel)]="cliente.correo">
                 </div>
             </div>
             <div class="row">

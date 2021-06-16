@@ -21,6 +21,7 @@ import { VentaService } from '../venta/venta.service';
 import { Img, PdfMakeWrapper, Table, Txt } from 'pdfmake-wrapper';
 import * as pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { SendEmailService } from 'src/app/services/email/send-email.service';
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 @Component({
   selector: 'app-registrar-venta',
@@ -41,7 +42,8 @@ export class RegistrarVentaComponent extends BaseComponent implements OnInit {
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public asignaService: AsignaProductoTiendaService,
     public productoService: ProductoService, public productoDetalleService: DetalleProductoService,
     public tiendaService: TiendaService, public detalleVentaService: DetalleVentaService,
-    public clienteService: ClienteService, public ventaService: VentaService,public imgservice: ImagenService) {
+    public clienteService: ClienteService, public ventaService: VentaService,public imgservice: ImagenService,
+    public emailService: SendEmailService) {
 
         super(dialog,_snackBar,router,route);
         this.mobileQuery = media.matchMedia('(max-width: 600px)');
@@ -164,7 +166,10 @@ export class RegistrarVentaComponent extends BaseComponent implements OnInit {
           this.detalleVentaService.listaDetallesCarrito = [];
           localStorage.removeItem('listaCarrito');
           localStorage.setItem('listaCarrito', JSON.stringify(this.productoService.listaCarrito));
-      })
+      });
+      this.emailService.enviarCorreoCompra(this.clienteSesion.correo).subscribe(data =>{
+        this.openSnackBar(data);
+      });
     }else{
       this.openSnackBar("Complete todos los campos necesarios para efectuar la compra");
     }
