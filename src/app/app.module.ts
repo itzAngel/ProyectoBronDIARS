@@ -22,7 +22,7 @@ import { ProductoModule } from './modules/producto/producto.module';
     HomeComponent,
     NotFoundComponent,
     DashboardComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

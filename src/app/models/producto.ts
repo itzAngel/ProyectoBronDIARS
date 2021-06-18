@@ -1,5 +1,6 @@
 import { Categoria } from "./categoria";
 import { DetalleProducto } from "./detalle-producto";
+import { DetalleVenta } from "./detalle-venta";
 import { Imagen } from "./imagen";
 
 export class Producto {
@@ -11,4 +12,5 @@ export class Producto {
     foto: string = null;
     listaDetalleProducto: DetalleProducto[] = [];
     listaImagen: Imagen[] = [];
+    listaDetalleVenta: DetalleVenta[] = [];
 }

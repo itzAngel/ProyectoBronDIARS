@@ -33,6 +33,7 @@ const routes: Routes = [
     { path: 'registrarVenta', loadChildren: () => import('./modules/registrar-venta/registrar-venta.module').then(m => m.RegistrarVentaModule) },
     { path: 'contacto', loadChildren: () => import('./modules/contacto/contacto.module').then(m => m.ContactoModule) },
     { path: 'queja', loadChildren: () => import('./modules/queja/queja.module').then(m => m.QuejaModule) },
+    { path: 'report', loadChildren: () => import('./report/report.module').then(m => m.ReportModule) },
     //{ path: '**', redirectTo: 'not-found'}
   ];
 

@@ -19,4 +19,8 @@ export class DetalleVentaService extends BaseService{
   obtenerlistaporid(id:number){
     return this.http.get<DetalleVenta[]>(this.Url + "/obtenerlistaporid/" + id);
   }
+
+  listarxProducto(id:number){
+    return this.http.get<DetalleVenta[]>(this.Url + "/listarxProducto/" + id);
+  }
 }

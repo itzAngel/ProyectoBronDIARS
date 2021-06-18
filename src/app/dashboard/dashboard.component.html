@@ -1,7 +1,7 @@
 <div *ngIf="loggeado" class="example-container" [class.example-is-mobile]="mobileQuery.matches">
-    <mat-toolbar color="primary" class="example-toolbar">
+    <mat-toolbar style="height: 100px;">
         <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-        <h1 class="example-app-name" routerLink="../home" style="cursor: pointer;">
+        <h1 class="titulo_marca" routerLink="../home" style="cursor: pointer;">
             Bron App
         </h1>
         <span class="example-spacer"></span>
@@ -11,6 +11,14 @@
             <span *ngIf="usuarioSesion != null && loggeado">{{usuarioSesion.nombre}}</span>
           </button>
           <mat-menu #menuLogin="matMenu">
+            <button mat-menu-item routerLink="../home">
+                <mat-icon>home</mat-icon>
+                <span>Home</span>
+            </button>
+            <button mat-menu-item routerLink="../report">
+                <mat-icon>summarize</mat-icon>
+                <span>Reportes</span>
+            </button>
             <button mat-menu-item (click)="cerrarSesion()">
               <mat-icon>dialpad</mat-icon>
               <span>Cerrar Sesion</span>

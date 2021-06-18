@@ -14,29 +14,33 @@
         <span class="example-spacer"></span>
         <div>
             <button mat-button [matMenuTriggerFor]="menuLogin" >
-                <mat-icon>person</mat-icon>
-                <span *ngIf="clienteSesion != null && loggeadoClient">{{clienteSesion.nombre}}</span>
-                <span *ngIf="usuarioSesion != null && loggeado">{{usuarioSesion.nombre}}</span>
-              </button>
-              <mat-menu #menuLogin="matMenu">
-                <button mat-button *ngIf="!loggeado && !loggeadoClient"routerLink="../login">Login</button>
-                <button mat-menu-item *ngIf="loggeadoClient" routerLink="../queja">
-                    <mat-icon>sentiment_dissatisfied</mat-icon>
-                    <span>Mis quejas</span>
-                </button>
-                <button mat-menu-item *ngIf="loggeado" routerLink="../dashboard">
-                    <mat-icon>dashboard</mat-icon>
-                    <span>Dashboard</span>
-                </button>
-                <button mat-menu-item *ngIf="loggeado" (click)="cerrarSesion()">
-                  <mat-icon>dialpad</mat-icon>
-                  <span>Cerrar Sesion</span>
-                </button>
-                <button mat-menu-item *ngIf="loggeadoClient" (click)="cerrarSesion()">
+                    <mat-icon>person</mat-icon>
+                    <span *ngIf="clienteSesion != null && loggeadoClient">{{clienteSesion.nombre}}</span>
+                    <span *ngIf="usuarioSesion != null && loggeado">{{usuarioSesion.nombre}}</span>
+            </button>
+            <mat-menu #menuLogin="matMenu">
+                    <button mat-button *ngIf="!loggeado && !loggeadoClient"routerLink="../login">Login</button>
+                    <button mat-menu-item *ngIf="loggeadoClient" routerLink="../queja">
+                        <mat-icon>sentiment_dissatisfied</mat-icon>
+                        <span>Mis quejas</span>
+                    </button>
+                    <button mat-menu-item *ngIf="loggeado" routerLink="../dashboard">
+                        <mat-icon>dashboard</mat-icon>
+                        <span>Dashboard</span>
+                    </button>
+                    <button mat-menu-item *ngIf="loggeado" routerLink="../report">
+                        <mat-icon>summarize</mat-icon>
+                        <span>Reportes</span>
+                    </button>
+                    <button mat-menu-item *ngIf="loggeado" (click)="cerrarSesion()">
                     <mat-icon>dialpad</mat-icon>
                     <span>Cerrar Sesion</span>
-                  </button>
-              </mat-menu>
+                    </button>
+                    <button mat-menu-item *ngIf="loggeadoClient" (click)="cerrarSesion()">
+                        <mat-icon>dialpad</mat-icon>
+                        <span>Cerrar Sesion</span>
+                    </button>
+            </mat-menu>
         </div>
         <div>
             <p class="carrito" style="cursor: pointer;" (click)="snav.toggle()">Carrito</p>

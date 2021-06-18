@@ -1,0 +1,25 @@
+<div class="container" *ngIf="loggeado">
+  <div class="row mt-4">
+      <mat-toolbar>
+          <button mat-button class="example-app-name" routerLink="../home" style="cursor: pointer;">
+              <mat-icon>reply</mat-icon>Regresar
+          </button>
+          <span *ngIf="reporteCliente">Ranking de Clientes</span>
+          <span *ngIf="reporteProducto">Ranking de Productos</span>
+          <span style="flex: 1 1 auto;"></span>
+          <button mat-button (click)="cambiarRankCliente()">
+              <mat-icon>person</mat-icon>Ranking de Clientes
+          </button>
+          <button mat-button (click)="cambiarRankProducto()">
+            <mat-icon>shopping_cart</mat-icon>Ranking de Productos
+        </button>
+      </mat-toolbar>
+      <div><br><br></div>
+      <div *ngIf="reporteCliente">
+          <app-ranking-cliente></app-ranking-cliente>
+      </div>
+      <div *ngIf="reporteProducto">
+        <app-ranking-producto></app-ranking-producto>
+      </div>
+  </div>
+</div>

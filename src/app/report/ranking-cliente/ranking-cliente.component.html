@@ -1,0 +1,35 @@
+<table mat-table [dataSource]="dataSourceCliente" matSort class="mat-elevation-z8" >
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="dni_cliente">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> DNI Cliente </th>
+      <td mat-cell *matCellDef="let element"> {{element.dni_cliente}} </td>
+    </ng-container>
+  
+    <!-- Name Column -->
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+      <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="apellido">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellido </th>
+      <td mat-cell *matCellDef="let element"> {{element.apellido}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="cantidadCompras">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad de compras </th>
+      <td mat-cell *matCellDef="let element"> {{element.cantidadCompras}} </td>
+    </ng-container>
+  
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="totalCompra">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Total de compras </th>
+      <td mat-cell *matCellDef="let element"> {{element.totalCompra}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsCliente"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsCliente;"></tr>
+  </table>

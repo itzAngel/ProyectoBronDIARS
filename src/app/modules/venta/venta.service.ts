@@ -14,4 +14,8 @@ export class VentaService extends BaseService{
     super(http,router);
     this.Url = this.Url + "venta"
   }
+
+  listarxCliente(id:number){
+    return this.http.get<Venta[]>(this.Url + "/listarxCliente/" + id);
+  }
 }
